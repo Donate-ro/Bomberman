@@ -36,21 +36,19 @@ namespace Assets.Scripts
         {
             breakableWall.transform.localScale = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
             int row, column;
-            int[] randomRows = new int[countOfBreakableWalls];
-            int[] randomColumns = new int[countOfBreakableWalls];
+            int[,] coordinatesOfBreakableWalls = new int[countOfBreakableWalls, 2];
             System.Random random = new System.Random();
             while (countOfBreakableWalls != 0)
             {
                 row = random.Next(1, rowCount - 1);
                 column = random.Next(1, columnCount - 1);
-                if (!CanCreateUnbreakableWall(row, column, rowCount, columnCount))
-                    if (!BreakableWall(row, column, randomRows, randomColumns))
-                    {
-                        Instantiate(breakableWall, new Vector3(row - rowCount / 2f, ScaleOfCube / 2, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
-                        randomRows[countOfBreakableWalls - 1] = row;
-                        randomColumns[countOfBreakableWalls - 1] = column;
-                        countOfBreakableWalls--;
-                    }
+                if ((!CanCreateUnbreakableWall(row, column, rowCount, columnCount)) && (!BreakableWall(row, column, coordinatesOfBreakableWalls)))
+                {
+                    Instantiate(breakableWall, new Vector3(row - rowCount / 2f, ScaleOfCube / 2, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
+                    coordinatesOfBreakableWalls[countOfBreakableWalls - 1, 0] = row;
+                    coordinatesOfBreakableWalls[countOfBreakableWalls - 1, 1] = column;
+                    countOfBreakableWalls--;
+                }
             }
         }
 
@@ -60,10 +58,10 @@ namespace Assets.Scripts
             else return false;
         }
 
-        bool BreakableWall(int checkRow, int checkColumn, int[] rows, int[] columns)
+        bool BreakableWall(int checkRow, int checkColumn, int[,] coordinatesOfWall)
         {
-            for (int i = 0; i < rows.Length; i++)
-                if (checkRow == rows[i]) if (checkColumn == columns[i]) return true;
+            for (int i = 0; i < coordinatesOfWall.Length / 2; i++)
+                if (checkRow == coordinatesOfWall[i, 0]) if (checkColumn == coordinatesOfWall[i, 1]) return true;
             return false;
         }
     }
