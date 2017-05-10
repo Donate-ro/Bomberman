@@ -1,25 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 namespace Assets.Scripts
 {
     public class Run : MonoBehaviour
     {
-        public int CountOfRows;
-        public int CountOfColumns;
+        public int countOfRows;
+        public int countOfColumns;
         public int countOfBreakableWalls;
 
         void Start()
         {
             Camera cam = Camera.main;
-            if (CountOfColumns >= CountOfRows) cam.transform.position = new Vector3(0, CountOfColumns, -CountOfColumns);
-            else cam.transform.position = new Vector3(0, CountOfRows, -CountOfRows);
-            ObjectCreator creator = new ObjectCreator(1f);
-            ResourseLoader loader = new ResourseLoader();
-            creator.CreateFloor(loader.LoadFloor(), CountOfColumns, CountOfRows);
-            creator.CreateUnbreakableWalls(loader.LoadUnbreakableWall(), CountOfColumns, CountOfRows);
-            if (countOfBreakableWalls <= (CountOfColumns - 1) * (CountOfRows - 1))
-                creator.CreateBreakableWalls(loader.LoadBreakableWall(), CountOfColumns, CountOfRows, countOfBreakableWalls);
+            if (countOfColumns >= countOfRows) cam.transform.position = new Vector3(0, countOfColumns/2, -countOfColumns/2);
+            else cam.transform.position = new Vector3(0, countOfRows, -countOfRows);
+            ObjectCreator creator = new ObjectCreator(0.8f,countOfColumns,countOfRows);
+            creator.CreateFloor();
+            creator.CreateUnbreakableWalls();
+            if (countOfBreakableWalls <= (countOfColumns - 4) * (countOfRows - 4))
+                creator.CreateBreakableWalls(countOfBreakableWalls);
+            creator.CreatePlayer();
+            creator.CreateEnemy();
+
         }
 
     }

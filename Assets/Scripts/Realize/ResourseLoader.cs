@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Assets.Scripts
@@ -12,11 +13,20 @@ namespace Assets.Scripts
         }
         public override GameObject LoadUnbreakableWall()
         {
-            return Resources.Load("Unbreakable Wall") as GameObject;
+            return Resources.Load("Walls/Unbreakable Wall") as GameObject;
         }
         public override GameObject LoadBreakableWall()
         {
-            return Resources.Load("Breakable Wall") as GameObject;
+            return Resources.Load("Walls/Breakable Wall") as GameObject;
+        }
+
+        public override GameObject LoadPlayer()
+        {
+            return Resources.Load("Players/Player") as GameObject;
+        }
+        public override GameObject LoadEnemy()
+        {
+            return Resources.Load("Players/Enemy") as GameObject;
         }
     }
 }
