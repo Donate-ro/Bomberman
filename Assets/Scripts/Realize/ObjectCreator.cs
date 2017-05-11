@@ -38,6 +38,7 @@ namespace Assets.Scripts
         {
             GameObject unbreakableWall = Loader.LoadUnbreakableWall();
             unbreakableWall.transform.localScale = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
+            CheckAndAddBoxCollider(unbreakableWall);
             for (int row = 0; row <= rowCount; row++)
             {
                 for (int column = 0; column <= columnCount; column++)
@@ -53,6 +54,7 @@ namespace Assets.Scripts
         public override void CreateBreakableWalls(int countOfBreakableWalls)
         {
             GameObject breakableWall = Loader.LoadBreakableWall();
+            CheckAndAddBoxCollider(breakableWall);
             breakableWall.transform.localScale = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
             while (countOfBreakableWalls != 0)
             {
@@ -66,16 +68,30 @@ namespace Assets.Scripts
         public override void CreateEnemy()
         {
             GameObject enemy = Loader.LoadEnemy();
-            //enemy.AddComponent<Assets.Scripts.Moving>();
             CreateDynamicObjects(enemy);
+            CheckAndAddBoxCollider(enemy);
         }
 
         public override void CreatePlayer()
         {
             GameObject player = Loader.LoadPlayer();
-            //player.AddComponent<Assets.Scripts.Moving>();
+            if (player.GetComponent<Assets.Scripts.Moving>() == null)
+            {
+                player.AddComponent<Assets.Scripts.Moving>();
+            }
+            CheckAndAddBoxCollider(player);
             CreateDynamicObjects(player);
 
+        }
+
+        void CheckAndAddBoxCollider(GameObject obj)
+        {
+            if (obj.GetComponent<BoxCollider>() == null)
+            {
+                obj.AddComponent<BoxCollider>();
+                obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
+            }
+            else obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
         }
 
         void CreateDynamicObjects(GameObject obj)
@@ -83,7 +99,7 @@ namespace Assets.Scripts
             bool check = false;
             while (!check)
             {
-                check = GenerateAndCheck(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, ScaleOfCube + 0.2f);
+                check = GenerateAndCheck(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, ScaleOfCube + 0.3f);
             }
             dymamicObjects++;
         }
