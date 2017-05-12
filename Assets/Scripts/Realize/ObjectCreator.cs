@@ -68,18 +68,18 @@ namespace Assets.Scripts
         public override void CreateEnemy()
         {
             GameObject enemy = Loader.LoadEnemy();
+            enemy.GetComponent<Rigidbody>().drag = 1;
+            if (enemy.GetComponent<AutoControl>() == null)
+                enemy.AddComponent<AutoControl>();
             CreateDynamicObjects(enemy);
-            CheckAndAddBoxCollider(enemy);
         }
 
         public override void CreatePlayer()
         {
             GameObject player = Loader.LoadPlayer();
-            if (player.GetComponent<Assets.Scripts.Moving>() == null)
-            {
-                player.AddComponent<Assets.Scripts.Moving>();
-            }
-            CheckAndAddBoxCollider(player);
+            player.GetComponent<Rigidbody>().drag = 1;
+            if (player.GetComponent<Moving>() == null)
+                player.AddComponent<Moving>();
             CreateDynamicObjects(player);
 
         }
@@ -87,11 +87,8 @@ namespace Assets.Scripts
         void CheckAndAddBoxCollider(GameObject obj)
         {
             if (obj.GetComponent<BoxCollider>() == null)
-            {
                 obj.AddComponent<BoxCollider>();
-                obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
-            }
-            else obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
+            obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
         }
 
         void CreateDynamicObjects(GameObject obj)
@@ -99,7 +96,7 @@ namespace Assets.Scripts
             bool check = false;
             while (!check)
             {
-                check = GenerateAndCheck(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, ScaleOfCube + 0.3f);
+                check = GenerateAndCheck(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, 1);
             }
             dymamicObjects++;
         }

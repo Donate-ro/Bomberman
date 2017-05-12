@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Abstract\AbstractObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractReasorceLoader.cs" />
+    <Compile Include="Assets\Scripts\Realize\AutoControl.cs" />
     <Compile Include="Assets\Scripts\Realize\Moving.cs" />
     <Compile Include="Assets\Scripts\Realize\ObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Realize\ResourseLoader.cs" />
