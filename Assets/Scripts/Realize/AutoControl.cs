@@ -1,30 +1,43 @@
-﻿
+﻿using UnityEngine;
+
 namespace Assets.Scripts
 {
     class AutoControl : Moving
     {
-        public int speed;
-        public int freeze = 10;
-        private void Start()
-        {
-            speed = movementSpeed;
-        }
+        public int speedOfChangingDirection = 30;
+        int changeDirection = 50;
+        int countBeforeChangingDirection;
+        int leftOrDown = -1;
+        int rightOrUp = 2;
+        bool wallCollision;
+        System.Random random = new System.Random();
 
-        private void FixedUpdate()
-        {
-            GetCoordinates();
-            Move();
-            Rotate();
-        }
         protected override void GetCoordinates()
         {
-            if (freeze == movementSpeed)
+            if (countBeforeChangingDirection == changeDirection) RandomCoordinates();
+            else countBeforeChangingDirection++;
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "Wall")
             {
-                moveHorizontal = random.Next(-speed, speed) / (speed - 1);
-                moveVertical = random.Next(-speed, speed) / (speed - 1);
-                freeze = 0;
+                RandomCoordinates();
+                wallCollision = true;
             }
-            else freeze++;
+        }
+
+        void OnCollisionStay(Collision collision)
+        {
+            if ((collision.gameObject.tag == "Enemy") || (wallCollision)) RandomCoordinates();
+        }
+
+        void RandomCoordinates()
+        {
+            moveHorizontal = random.Next(leftOrDown, rightOrUp);
+            moveVertical = random.Next(leftOrDown, rightOrUp);
+            countBeforeChangingDirection = speedOfChangingDirection;
+            wallCollision = false;
         }
     }
 }

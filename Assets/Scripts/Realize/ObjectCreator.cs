@@ -69,8 +69,6 @@ namespace Assets.Scripts
         {
             GameObject enemy = Loader.LoadEnemy();
             enemy.GetComponent<Rigidbody>().drag = 1;
-            if (enemy.GetComponent<AutoControl>() == null)
-                enemy.AddComponent<AutoControl>();
             CreateDynamicObjects(enemy);
         }
 
@@ -78,8 +76,6 @@ namespace Assets.Scripts
         {
             GameObject player = Loader.LoadPlayer();
             player.GetComponent<Rigidbody>().drag = 1;
-            if (player.GetComponent<Moving>() == null)
-                player.AddComponent<Moving>();
             CreateDynamicObjects(player);
 
         }
@@ -88,7 +84,7 @@ namespace Assets.Scripts
         {
             if (obj.GetComponent<BoxCollider>() == null)
                 obj.AddComponent<BoxCollider>();
-            obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube * 2, ScaleOfCube);
+            obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
         }
 
         void CreateDynamicObjects(GameObject obj)
@@ -126,7 +122,5 @@ namespace Assets.Scripts
                 if (checkRow == coordinatesOfBreakableWalls[i, 0]) if (checkColumn == coordinatesOfBreakableWalls[i, 1]) return true;
             return false;
         }
-
-
     }
 }

@@ -9,5 +9,6 @@ namespace Assets.Scripts
         public abstract GameObject LoadBreakableWall();
         public abstract GameObject LoadPlayer();
         public abstract GameObject LoadEnemy();
+        public abstract GameObject LoadBomb();
     }
 }

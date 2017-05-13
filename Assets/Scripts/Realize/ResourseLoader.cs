@@ -28,5 +28,9 @@ namespace Assets.Scripts
         {
             return Resources.Load("Players/Enemy") as GameObject;
         }
+        public override GameObject LoadBomb()
+        {
+            return Resources.Load("Bomb") as GameObject;
+        }
     }
 }

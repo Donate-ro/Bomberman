@@ -3,11 +3,11 @@ namespace Assets.Scripts
 {
     class Moving : MonoBehaviour
     {
-        public int movementSpeed = 10;
-        protected float moveHorizontal;
-        protected float moveVertical;
+        public float movementSpeed = 0.1f;
+        public float moveHorizontal;
+        public float moveVertical;
         float yRotation;
-        protected System.Random random = new System.Random();
+        DynamicObjectCreator dynamicObjects = new DynamicObjectCreator();
 
         private void FixedUpdate()
         {
@@ -19,7 +19,7 @@ namespace Assets.Scripts
         protected void Move()
         {
             Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-            transform.position += movement / movementSpeed;
+            transform.position += movement * movementSpeed;
         }
 
         protected void Rotate()
@@ -35,6 +35,13 @@ namespace Assets.Scripts
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
+            if (Input.GetKeyDown(KeyCode.Space)) CreateBomb();
+        }
+
+        void CreateBomb()
+        {
+            float sizeOfBomb = transform.localScale.x-(transform.localScale.x/10);
+            dynamicObjects.CreateBomb(new Vector3(transform.position.x, sizeOfBomb / 2, transform.position.z), sizeOfBomb);
         }
     }
 }

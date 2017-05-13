@@ -20,7 +20,10 @@ namespace Assets.Scripts
                 creator.CreateBreakableWalls(countOfBreakableWalls);
             creator.CreatePlayer();
             creator.CreateEnemy();
-
+            creator.CreateEnemy();
+            creator.CreateEnemy();
+            creator.CreateEnemy();
+            creator.CreateEnemy();
         }
 
     }
