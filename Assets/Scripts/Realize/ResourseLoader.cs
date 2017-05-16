@@ -32,5 +32,9 @@ namespace Assets.Scripts
         {
             return Resources.Load("Bomb") as GameObject;
         }
+        public override GameObject LoadExplosion()
+        {
+            return Resources.Load("Explosion") as GameObject;
+        }
     }
 }

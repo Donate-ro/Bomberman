@@ -6,12 +6,13 @@ namespace Assets.Scripts
         public float movementSpeed = 0.1f;
         public float moveHorizontal;
         public float moveVertical;
+        float cooldown;
         float yRotation;
         DynamicObjectCreator dynamicObjects = new DynamicObjectCreator();
 
         private void FixedUpdate()
         {
-            GetCoordinates();
+            TypeOfMoving();
             Move();
             Rotate();
         }
@@ -31,17 +32,24 @@ namespace Assets.Scripts
             transform.rotation = Quaternion.Euler(0, yRotation, 0);
         }
 
-        protected virtual void GetCoordinates()
+        protected virtual void TypeOfMoving()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
             if (Input.GetKeyDown(KeyCode.Space)) CreateBomb();
+
         }
 
         void CreateBomb()
         {
-            float sizeOfBomb = transform.localScale.x-(transform.localScale.x/10);
+            float sizeOfBomb = transform.localScale.x - (transform.localScale.x / 10);
             dynamicObjects.CreateBomb(new Vector3(transform.position.x, sizeOfBomb / 2, transform.position.z), sizeOfBomb);
+            new Exploder().Explode(new Vector3(transform.position.x, sizeOfBomb / 2, transform.position.z));
+        }
+
+        private void OnTriggerExit(Collider collider)
+        {
+            if (collider.CompareTag("Bomb")) collider.isTrigger = false;
         }
     }
 }

@@ -8,8 +8,10 @@ namespace Assets.Scripts
 {
     class DynamicObjectCreator : AbstractDynamicObjectCreator
     {
-        ResourseLoader Loader;
-        public float timeOfLife = 3;
+        protected ResourseLoader Loader;
+        public float timeOfLife = 2;
+        public int maxBombCount = 1;
+        public int bombCount = 0;
 
         public DynamicObjectCreator()
         {
@@ -18,9 +20,13 @@ namespace Assets.Scripts
 
         public override void CreateBomb(Vector3 positionOfPlayer, float scale)
         {
-            GameObject bomb = Loader.LoadBomb();
-            bomb.transform.localScale = new Vector3(scale, scale, scale);
-            Destroy(Instantiate(bomb, positionOfPlayer, new Quaternion(0, 0, 0, 0)), timeOfLife);
+            if (maxBombCount >= bombCount)
+            {
+                GameObject bomb = Loader.LoadBomb();
+                bomb.transform.localScale = new Vector3(scale, scale, scale);
+                Destroy(Instantiate(bomb, positionOfPlayer, new Quaternion(0, 0, 0, 0)), timeOfLife);
+            }
         }
+
     }
 }
