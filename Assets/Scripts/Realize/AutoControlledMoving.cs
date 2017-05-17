@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Wall")
+            if ((collision.gameObject.tag == "Wall") || (collision.gameObject.tag == "BreakableWall"))
             {
                 RandomCoordinates();
                 wallCollision = true;

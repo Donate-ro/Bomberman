@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 namespace Assets.Scripts
 {
     public class ResourseLoader : AbstractReasorceLoader
@@ -34,7 +31,7 @@ namespace Assets.Scripts
         }
         public override GameObject LoadExplosion()
         {
-            return Resources.Load("Explosion") as GameObject;
+            return Resources.Load("Explosion Effect") as GameObject;
         }
     }
 }

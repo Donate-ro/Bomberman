@@ -4,11 +4,9 @@ namespace Assets.Scripts
     class Moving : MonoBehaviour
     {
         public float movementSpeed = 0.1f;
-        public float moveHorizontal;
-        public float moveVertical;
-        float cooldown;
-        float yRotation;
-        DynamicObjectCreator dynamicObjects = new DynamicObjectCreator();
+        protected float moveHorizontal;
+        protected float moveVertical;
+        BombCreator bombCreator = new BombCreator();
 
         private void FixedUpdate()
         {
@@ -25,31 +23,52 @@ namespace Assets.Scripts
 
         protected void Rotate()
         {
-            if (moveHorizontal > 0) yRotation = 0;
-            if (moveVertical > 0) yRotation = 270;
-            if (moveHorizontal < 0) yRotation = 180;
-            if (moveVertical < 0) yRotation = 90;
-            transform.rotation = Quaternion.Euler(0, yRotation, 0);
+            transform.rotation = Quaternion.Euler(0, CheckRotation(moveHorizontal,moveVertical), 0);
         }
 
         protected virtual void TypeOfMoving()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
-            if (Input.GetKeyDown(KeyCode.Space)) CreateBomb();
+            if (Input.GetKey(KeyCode.Space)) CreateBomb();
 
         }
 
         void CreateBomb()
         {
-            float sizeOfBomb = transform.localScale.x - (transform.localScale.x / 10);
-            dynamicObjects.CreateBomb(new Vector3(transform.position.x, sizeOfBomb / 2, transform.position.z), sizeOfBomb);
-            new Exploder().Explode(new Vector3(transform.position.x, sizeOfBomb / 2, transform.position.z));
+            StartCoroutine(bombCreator.CreateBomb(new Vector3(transform.position.x, transform.position.y / 2, transform.position.z)));
         }
 
-        private void OnTriggerExit(Collider collider)
+        private void OnTriggerExit(Collider other)
         {
-            if (collider.CompareTag("Bomb")) collider.isTrigger = false;
+            if (other.CompareTag("Bomb")) other.isTrigger = false;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag=="Enemy") gameObject.SetActive(false);
+        }
+
+        float CheckRotation(float horizontal, float vertical)
+        {
+            if (vertical < 0)
+            {
+                if (horizontal > 0) return 45;
+                if (horizontal < 0) return 135;
+                if (horizontal == 0) return 90;
+            }
+            if (vertical > 0)
+            {
+                if (horizontal > 0) return 315;
+                if (horizontal < 0) return 225;
+                if (horizontal == 0) return 270;
+            }
+            if (vertical == 0)
+            {
+                if (horizontal > 0) return 0;
+                if (horizontal < 0) return 180;
+            }
+            return 0;
         }
     }
 }
