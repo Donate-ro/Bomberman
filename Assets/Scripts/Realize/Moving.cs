@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 namespace Assets.Scripts
 {
-    class Moving : MonoBehaviour
+    class Moving : AbstractMoving
     {
         public float movementSpeed = 0.1f;
-        protected float moveHorizontal;
-        protected float moveVertical;
         BombCreator bombCreator = new BombCreator();
 
         private void FixedUpdate()
@@ -15,18 +13,18 @@ namespace Assets.Scripts
             Rotate();
         }
 
-        protected void Move()
+        protected override void Move()
         {
             Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
             transform.position += movement * movementSpeed;
         }
 
-        protected void Rotate()
+        protected override void Rotate()
         {
             transform.rotation = Quaternion.Euler(0, CheckRotation(moveHorizontal,moveVertical), 0);
         }
 
-        protected virtual void TypeOfMoving()
+        protected override void TypeOfMoving()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
@@ -34,7 +32,7 @@ namespace Assets.Scripts
 
         }
 
-        void CreateBomb()
+        private void CreateBomb()
         {
             StartCoroutine(bombCreator.CreateBomb(new Vector3(transform.position.x, transform.position.y / 2, transform.position.z)));
         }

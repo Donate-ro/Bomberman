@@ -1,42 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     class Exploder : MonoBehaviour
     {
+        public float strengthOfExplosion = 1;
         List<Vector3> directions = new List<Vector3>()
         {
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
         };
-        List<RaycastHit> hits = new List<RaycastHit>();
-
-        public float strengthOfExplosion = 1;
 
         public void Explode(GameObject bomb, GameObject explosion, Action<List<RaycastHit>> action = null)
         {
             Destroy(bomb);
             Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), strengthOfExplosion);
             if (action != null)
-            {
-                FindCollisions(bomb.transform.position);
-                action(hits);
-                hits = new List<RaycastHit>();
-            }
-            
+                action(FindCollisions(bomb.transform.position));
         }
 
-        void FindCollisions(Vector3 startPosition)
+        List<RaycastHit> FindCollisions(Vector3 startPosition)
         {
+            List<RaycastHit> hits = new List<RaycastHit>();
             foreach (var direction in directions)
-            {
-                RaycastHit hit = Physics.RaycastAll(startPosition, direction, strengthOfExplosion).FirstOrDefault();
-                if (hit.collider != null)
+                 CheckHits(Physics.RaycastAll(startPosition, direction, strengthOfExplosion), hits);
+            return hits;
+        }
+
+        void CheckHits(RaycastHit[] allHits, List<RaycastHit> hits)
+        {
+            if (allHits.FirstOrDefault().collider != null)
+                foreach (var hit in allHits)
                     hits.Add(hit);
-            }
         }
     }
 }

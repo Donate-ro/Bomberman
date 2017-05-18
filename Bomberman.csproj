@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Assets\FireExplosionVFX\Scripts\FxSplash.cs" />
     <Compile Include="Assets\FireExplosionVFX\Scripts\LaunchEffect.cs" />
+    <Compile Include="Assets\Scripts\Abstract\AbstractMoving.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractReasorceLoader.cs" />
     <Compile Include="Assets\Scripts\Realize\AutoControlledMoving.cs" />

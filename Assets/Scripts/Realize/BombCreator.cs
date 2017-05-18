@@ -9,7 +9,7 @@ namespace Assets.Scripts
         protected ResourseLoader Loader;
         public float timeOfLife = 2;
         public int maxBombCount = 1;
-        public int bombCount = 0;
+        int bombCount = 0;
 
         public BombCreator()
         {
