@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     class Exploder : MonoBehaviour
     {
-        public float strengthOfExplosion = 1;
+        public float strengthOfExplosion = 20;
         List<Vector3> directions = new List<Vector3>()
         {
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
@@ -15,9 +15,13 @@ namespace Assets.Scripts
 
         public void Explode(GameObject bomb, GameObject explosion, Action<List<RaycastHit>> action = null)
         {
-            if (bomb.GetComponent<Collider>().isTrigger == true) GameObject.FindGameObjectsWithTag("Player")[0].SetActive(false);
             Destroy(bomb);
-            Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), strengthOfExplosion);
+            var particleSystems = explosion.GetComponentsInChildren<ParticleSystem>();
+            foreach (var particleSystem in particleSystems)
+            {
+                particleSystem.startSpeed = strengthOfExplosion;
+            }
+            Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
             if (action != null)
                 action(FindCollisions(bomb.transform.position));
         }
@@ -26,7 +30,7 @@ namespace Assets.Scripts
         {
             List<RaycastHit> hits = new List<RaycastHit>();
             foreach (var direction in directions)
-                 CheckHits(Physics.RaycastAll(startPosition, direction, strengthOfExplosion), hits);
+                CheckHits(Physics.RaycastAll(GetStartPosition(direction, startPosition), direction, strengthOfExplosion + 1), hits);
             return hits;
         }
 
@@ -34,7 +38,22 @@ namespace Assets.Scripts
         {
             if (allHits.FirstOrDefault().collider != null)
                 foreach (var hit in allHits)
-                    hits.Add(hit);
+                {
+                    if ((hit.collider.CompareTag("Wall")) || (hit.collider.CompareTag("BreakableWall")))
+                    {
+                        hits.Add(hit);
+                        break;
+                    }
+                }
+        }
+
+        Vector3 GetStartPosition(Vector3 direction, Vector3 startPosition)
+        {
+            if (direction == Vector3.left) return Vector3.right + startPosition;
+            if (direction == Vector3.right) return Vector3.left + startPosition;
+            if (direction == Vector3.forward) return Vector3.back + startPosition;
+            if (direction == Vector3.back) return Vector3.forward + startPosition;
+            return new Vector3();
         }
     }
 }

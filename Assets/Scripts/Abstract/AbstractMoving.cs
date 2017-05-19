@@ -9,6 +9,6 @@ namespace Assets.Scripts
 
         protected abstract void Move();
         protected abstract void Rotate();
-        protected abstract void TypeOfMoving();
+        protected abstract void Control();
     }
 }

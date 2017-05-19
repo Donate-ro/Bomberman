@@ -8,7 +8,7 @@ namespace Assets.Scripts
 
         private void FixedUpdate()
         {
-            TypeOfMoving();
+            Control();
             Move();
             Rotate();
         }
@@ -24,7 +24,7 @@ namespace Assets.Scripts
             transform.rotation = Quaternion.Euler(0, CheckRotation(moveHorizontal,moveVertical), 0);
         }
 
-        protected override void TypeOfMoving()
+        protected override void Control()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");

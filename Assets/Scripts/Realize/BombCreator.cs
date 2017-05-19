@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,12 +29,37 @@ namespace Assets.Scripts
             }
         }
 
+        public IEnumerator DestroyWithEffect(GameObject hit)
+        {
+            Color tmpColor = hit.GetComponent<Renderer>().material.color;
+            while (tmpColor.a > 0)
+            {
+                tmpColor.a -= 0.1f;
+                hit.GetComponent<Renderer>().material.color = tmpColor;
+                yield return new WaitForSeconds(0.01f);
+            }
+            hit.SetActive(false);
+        }
+
         void DestroyObject(List<RaycastHit> hits)
         {
             foreach (var hit in hits)
             {
-                if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
-                    hit.transform.gameObject.SetActive(false);
+                try
+                {
+                    if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
+                    {
+                        //Color tmpColor = hit.transform.gameObject.GetComponent<Renderer>().material.color;
+                        //tmpColor.a -= 0.25f;
+                        //hit.transform.gameObject.GetComponent<Renderer>().material.color = tmpColor;
+                        IEnumerator tmp = DestroyWithEffect(hit.transform.gameObject);
+                        StartCoroutine(tmp);
+                        //hit.transform.gameObject.SetActive(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
             }
         }
     }
