@@ -23,6 +23,7 @@ namespace Assets.Scripts
                 GameObject bomb = Instantiate(Loader.LoadBomb(), positionOfPlayer, new Quaternion(0, 0, 0, 0));
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
+                if (bomb.GetComponent<Collider>().isTrigger == true) GameObject.FindGameObjectsWithTag("Player")[0].SetActive(false);
                 Explode(bomb, Loader.LoadExplosion(), DestroyObject);
                 bombCount--;
             }
