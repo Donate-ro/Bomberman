@@ -15,6 +15,7 @@ namespace Assets.Scripts
 
         public void Explode(GameObject bomb, GameObject explosion, Action<List<RaycastHit>> action = null)
         {
+            if (bomb.GetComponent<Collider>().isTrigger == true) GameObject.FindGameObjectsWithTag("Player")[0].SetActive(false);
             Destroy(bomb);
             Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), strengthOfExplosion);
             if (action != null)
