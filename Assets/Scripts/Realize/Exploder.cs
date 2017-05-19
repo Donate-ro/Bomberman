@@ -15,6 +15,7 @@ namespace Assets.Scripts
 
         public void Explode(GameObject bomb, GameObject explosion, Action<List<RaycastHit>> action = null)
         {
+            bomb.SetActive(false);
             Destroy(bomb);
             var particleSystems = explosion.GetComponentsInChildren<ParticleSystem>();
             foreach (var particleSystem in particleSystems)
@@ -29,23 +30,11 @@ namespace Assets.Scripts
         List<RaycastHit> FindCollisions(Vector3 startPosition)
         {
             List<RaycastHit> hits = new List<RaycastHit>();
+            RaycastHit hit = new RaycastHit();
             foreach (var direction in directions)
-                CheckHits(Physics.RaycastAll(GetStartPosition(direction, startPosition), direction, strengthOfExplosion + 1), hits);
+                if (Physics.Raycast(GetStartPosition(direction, startPosition), direction, out hit, strengthOfExplosion + 1))
+                    if (!hit.transform.gameObject.CompareTag("Wall")) hits.Add(hit);
             return hits;
-        }
-
-        void CheckHits(RaycastHit[] allHits, List<RaycastHit> hits)
-        {
-            if (allHits.FirstOrDefault().collider != null)
-                foreach (var hit in allHits)
-                {
-                    if (!hit.collider.CompareTag("Wall"))
-                    {
-                        hits.Add(hit);
-                        break;
-                    }
-                    else break;
-                }
         }
 
         Vector3 GetStartPosition(Vector3 direction, Vector3 startPosition)

@@ -40,10 +40,7 @@ namespace Assets.Scripts
             foreach (var hit in hits)
             {
                 if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
-                {
                     StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
-                    //hit.transform.gameObject.SetActive(false);
-                }
             }
         }
     }

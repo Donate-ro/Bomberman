@@ -7,6 +7,7 @@ namespace Assets.Scripts
     {
         public static IEnumerator FadeEffect(GameObject hit)
         {
+            yield return new WaitForSeconds(0.75f);
             Color color = hit.GetComponent<Renderer>().material.color;
             while (color.a > 0)
             {
