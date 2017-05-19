@@ -12,7 +12,7 @@ namespace Assets.Scripts
         bool wallCollision;
         System.Random random = new System.Random();
 
-        protected override void Control()
+        protected override void SettingCoordinates()
         {
             if (countBeforeChangingDirection == changeDirection) RandomCoordinates();
             else countBeforeChangingDirection++;

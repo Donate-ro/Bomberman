@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     class Exploder : MonoBehaviour
     {
-        public float strengthOfExplosion = 20;
+        public float strengthOfExplosion = 5;
         List<Vector3> directions = new List<Vector3>()
         {
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
@@ -39,11 +39,12 @@ namespace Assets.Scripts
             if (allHits.FirstOrDefault().collider != null)
                 foreach (var hit in allHits)
                 {
-                    if ((hit.collider.CompareTag("Wall")) || (hit.collider.CompareTag("BreakableWall")))
+                    if (!hit.collider.CompareTag("Wall"))
                     {
                         hits.Add(hit);
                         break;
                     }
+                    else break;
                 }
         }
 

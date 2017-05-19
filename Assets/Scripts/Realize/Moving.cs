@@ -4,11 +4,16 @@ namespace Assets.Scripts
     class Moving : AbstractMoving
     {
         public float movementSpeed = 0.1f;
-        BombCreator bombCreator = new BombCreator();
+        BombCreator bombCreator;
+
+        private void Start()
+        {
+            bombCreator = gameObject.GetComponent<BombCreator>();
+        }
 
         private void FixedUpdate()
         {
-            Control();
+            SettingCoordinates();
             Move();
             Rotate();
         }
@@ -24,17 +29,10 @@ namespace Assets.Scripts
             transform.rotation = Quaternion.Euler(0, CheckRotation(moveHorizontal,moveVertical), 0);
         }
 
-        protected override void Control()
+        protected override void SettingCoordinates()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
-            if (Input.GetKey(KeyCode.Space)) CreateBomb();
-
-        }
-
-        private void CreateBomb()
-        {
-            StartCoroutine(bombCreator.CreateBomb(new Vector3(transform.position.x, transform.position.y / 2, transform.position.z)));
         }
 
         private void OnTriggerExit(Collider other)
@@ -46,6 +44,11 @@ namespace Assets.Scripts
         {
             if (collision.gameObject.tag=="Enemy") gameObject.SetActive(false);
         }
+
+        //private void OnParticleCollision(GameObject other)
+        //{
+        //    if ((other.CompareTag("Player")) || (other.CompareTag("BreakableWall")) || (other.CompareTag("Enemy"))) other.SetActive(false); //StartCoroutine(Effects.FadeEffect(other));
+        //}
 
         float CheckRotation(float horizontal, float vertical)
         {

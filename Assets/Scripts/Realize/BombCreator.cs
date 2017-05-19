@@ -17,11 +17,17 @@ namespace Assets.Scripts
             Loader = new ResourseLoader();
         }
 
-        public IEnumerator CreateBomb(Vector3 positionOfPlayer)
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.Space))
+                StartCoroutine(CreateBomb());
+        }
+
+        public IEnumerator CreateBomb()
         {
             if (maxBombCount > bombCount)
             {
-                GameObject bomb = Instantiate(Loader.LoadBomb(), positionOfPlayer, new Quaternion(0, 0, 0, 0));
+                GameObject bomb = Instantiate(Loader.LoadBomb(), new Vector3(transform.position.x, transform.position.y / 2, transform.position.z), new Quaternion(0, 0, 0, 0));
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
                 Explode(bomb, Loader.LoadExplosion(), DestroyObject);
@@ -29,36 +35,14 @@ namespace Assets.Scripts
             }
         }
 
-        public IEnumerator DestroyWithEffect(GameObject hit)
-        {
-            Color tmpColor = hit.GetComponent<Renderer>().material.color;
-            while (tmpColor.a > 0)
-            {
-                tmpColor.a -= 0.1f;
-                hit.GetComponent<Renderer>().material.color = tmpColor;
-                yield return new WaitForSeconds(0.01f);
-            }
-            hit.SetActive(false);
-        }
-
         void DestroyObject(List<RaycastHit> hits)
         {
             foreach (var hit in hits)
             {
-                try
+                if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
                 {
-                    if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
-                    {
-                        //Color tmpColor = hit.transform.gameObject.GetComponent<Renderer>().material.color;
-                        //tmpColor.a -= 0.25f;
-                        //hit.transform.gameObject.GetComponent<Renderer>().material.color = tmpColor;
-                        IEnumerator tmp = DestroyWithEffect(hit.transform.gameObject);
-                        StartCoroutine(tmp);
-                        //hit.transform.gameObject.SetActive(false);
-                    }
-                }
-                catch (Exception ex)
-                {
+                    StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
+                    //hit.transform.gameObject.SetActive(false);
                 }
             }
         }
