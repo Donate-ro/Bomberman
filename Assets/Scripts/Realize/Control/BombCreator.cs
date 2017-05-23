@@ -11,6 +11,8 @@ namespace Assets.Scripts
         public float timeOfLife = 2;
         public int maxBombCount = 1;
         int bombCount = 0;
+        public bool detonator;
+        List<GameObject> bombsToExplode = new List<GameObject>();
 
         public BombCreator()
         {
@@ -19,8 +21,15 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
                 StartCoroutine(CreateBomb());
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Explode(bombsToExplode, loader.LoadExplosion(), DestroyObject);
+                bombCount -= bombsToExplode.Count;
+                bombsToExplode = new List<GameObject>();
+            }
         }
 
         public IEnumerator CreateBomb()
@@ -30,8 +39,15 @@ namespace Assets.Scripts
                 GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, transform.position.y / 2, transform.position.z), new Quaternion(0, 0, 0, 0));
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
-                Explode(bomb, loader.LoadExplosion(), DestroyObject);
-                bombCount--;
+                if (!detonator)
+                {
+                    Explode(bomb, loader.LoadExplosion(), DestroyObject);
+                    bombCount--;
+                }
+                else
+                {
+                    bombsToExplode.Add(bomb);
+                }
             }
         }
 
@@ -40,7 +56,10 @@ namespace Assets.Scripts
             foreach (var hit in hits)
             {
                 if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
+                {
+                    PowerUp.TryToCreatePowerup(hit.transform.gameObject);
                     StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
+                }
             }
         }
 

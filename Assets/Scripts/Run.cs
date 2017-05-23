@@ -20,7 +20,7 @@ namespace Assets.Scripts
             if (countOfBreakableWalls <= (countOfColumns - 4) * (countOfRows - 4))
                 creator.CreateBreakableWalls(countOfBreakableWalls);
             creator.CreatePlayer();
-            CreateEnemies(4);
+            //CreateEnemies(4);
         }
 
         void CreateEnemies(int count)

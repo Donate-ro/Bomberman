@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     class Exploder : MonoBehaviour
     {
-        public float strengthOfExplosion = 5;
+        public float strengthOfExplosion = 1;
         List<Vector3> directions = new List<Vector3>()
         {
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
@@ -25,6 +25,12 @@ namespace Assets.Scripts
             Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
             if (action != null)
                 action(FindCollisions(bomb.transform.position));
+        }
+
+        public void Explode(List<GameObject> bombs, GameObject explosion, Action<List<RaycastHit>> action = null)
+        {
+            foreach (GameObject bomb in bombs)
+                Explode(bomb, explosion, action);
         }
 
         List<RaycastHit> FindCollisions(Vector3 startPosition)
