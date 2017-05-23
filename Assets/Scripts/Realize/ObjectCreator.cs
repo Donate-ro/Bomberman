@@ -7,20 +7,21 @@ namespace Assets.Scripts
 
         public float ScaleOfCube { get; private set; }
 
-        ResourseLoader Loader;
+        ResourseLoader loader;
         System.Random random;
         int rowCount;
         int columnCount;
         int dymamicObjects;
+        float scaleOfField = 10f;
 
         int[,] coordinatesOfBreakableWalls;
 
-        public ObjectCreator(float cubeScale, int RowCount, int ColumnCount)
+        public ObjectCreator(float cubeScale, int countOfRows, int countOfColumns)
         {
             ScaleOfCube = cubeScale;
-            Loader = new ResourseLoader();
-            rowCount = RowCount;
-            columnCount = ColumnCount;
+            loader = new ResourseLoader();
+            rowCount = countOfRows;
+            columnCount = countOfColumns;
             coordinatesOfBreakableWalls = new int[(rowCount - 1) * (columnCount - 1), 2];
             random = new System.Random();
             dymamicObjects = 0;
@@ -29,14 +30,14 @@ namespace Assets.Scripts
 
         public override void CreateFloor()
         {
-            GameObject floor = Loader.LoadFloor();
-            floor.transform.localScale = new Vector3((rowCount + 2 * ScaleOfCube / 2) / 10f, 1, (columnCount + 2 * ScaleOfCube / 2) / 10f);
+            GameObject floor = loader.LoadFloor();
+            floor.transform.localScale = new Vector3((rowCount + 2 * ScaleOfCube / 2) / scaleOfField, 1, (columnCount + 2 * ScaleOfCube / 2) / scaleOfField);
             Instantiate(floor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         }
 
         public override void CreateUnbreakableWalls()
         {
-            GameObject unbreakableWall = Loader.LoadUnbreakableWall();
+            GameObject unbreakableWall = loader.LoadUnbreakableWall();
             unbreakableWall.transform.localScale = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
             CheckAndAddBoxCollider(unbreakableWall);
             for (int row = 0; row <= rowCount; row++)
@@ -53,12 +54,12 @@ namespace Assets.Scripts
         }
         public override void CreateBreakableWalls(int countOfBreakableWalls)
         {
-            GameObject breakableWall = Loader.LoadBreakableWall();
+            GameObject breakableWall = loader.LoadBreakableWall();
             CheckAndAddBoxCollider(breakableWall);
             breakableWall.transform.localScale = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
             while (countOfBreakableWalls != 0)
             {
-                if (GenerateAndCheck(breakableWall, countOfBreakableWalls - 1, ScaleOfCube / 2))
+                if (GeneratePositionOfDynamicObject(breakableWall, countOfBreakableWalls - 1, ScaleOfCube / 2))
                 {
                     countOfBreakableWalls--;
                 }
@@ -67,18 +68,17 @@ namespace Assets.Scripts
 
         public override void CreateEnemy()
         {
-            GameObject enemy = Loader.LoadEnemy();
-            enemy.GetComponent<Rigidbody>().drag = 1;
+            GameObject enemy = loader.LoadEnemy();
             CreateDynamicObjects(enemy);
         }
 
         public override void CreatePlayer()
         {
-            GameObject player = Loader.LoadPlayer();
-            player.GetComponent<Rigidbody>().drag = 1;
+            GameObject player = loader.LoadPlayer();
             CreateDynamicObjects(player);
 
         }
+
 
         void CheckAndAddBoxCollider(GameObject obj)
         {
@@ -89,15 +89,16 @@ namespace Assets.Scripts
 
         void CreateDynamicObjects(GameObject obj)
         {
+            obj.GetComponent<Rigidbody>().drag = 1;
             bool check = false;
             while (!check)
             {
-                check = GenerateAndCheck(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, 1);
+                check = GeneratePositionOfDynamicObject(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, 1);
             }
             dymamicObjects++;
         }
 
-        bool GenerateAndCheck(GameObject obj, int numOfObject, float scale)
+        bool GeneratePositionOfDynamicObject(GameObject obj, int numOfObject, float scale)
         {
             int row = random.Next(1, rowCount);
             int column = random.Next(1, columnCount);

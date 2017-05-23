@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-    class AutoControlledMoving : Moving
+    class AutoMovement : Movement
     {
         public int speedOfChangingDirection = 20;
         int changeDirection = 50;
@@ -12,12 +12,11 @@ namespace Assets.Scripts
         bool wallCollision;
         System.Random random = new System.Random();
 
-        protected override void SettingCoordinates()
+        protected override void SetCoordinates()
         {
             if (countBeforeChangingDirection == changeDirection) RandomCoordinates();
             else countBeforeChangingDirection++;
         }
-
 
         void RandomCoordinates()
         {

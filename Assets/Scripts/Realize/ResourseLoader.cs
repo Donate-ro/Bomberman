@@ -3,7 +3,6 @@ namespace Assets.Scripts
 {
     public class ResourseLoader : AbstractReasorceLoader
     {
-
         public override GameObject LoadFloor()
         {
             return Resources.Load("Floor") as GameObject;

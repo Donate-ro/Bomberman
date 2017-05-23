@@ -82,15 +82,16 @@
   <ItemGroup>
     <Compile Include="Assets\FireExplosionVFX\Scripts\FxSplash.cs" />
     <Compile Include="Assets\FireExplosionVFX\Scripts\LaunchEffect.cs" />
-    <Compile Include="Assets\Scripts\Abstract\AbstractMoving.cs" />
+    <Compile Include="Assets\Scripts\Abstract\AbstractMovement.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractReasorceLoader.cs" />
-    <Compile Include="Assets\Scripts\Realize\AutoControlledMoving.cs" />
-    <Compile Include="Assets\Scripts\Realize\BombCreator.cs" />
+    <Compile Include="Assets\Scripts\Realize\Control\AutoMovement.cs" />
+    <Compile Include="Assets\Scripts\Realize\Control\BombCreator.cs" />
     <Compile Include="Assets\Scripts\Realize\Effects.cs" />
     <Compile Include="Assets\Scripts\Realize\Exploder.cs" />
-    <Compile Include="Assets\Scripts\Realize\Moving.cs" />
+    <Compile Include="Assets\Scripts\Realize\Control\Movement.cs" />
     <Compile Include="Assets\Scripts\Realize\ObjectCreator.cs" />
+    <Compile Include="Assets\Scripts\Realize\Control\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Realize\ResourseLoader.cs" />
     <Compile Include="Assets\Scripts\Run.cs" />
   </ItemGroup>

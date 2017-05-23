@@ -7,14 +7,14 @@ namespace Assets.Scripts
 {
     class BombCreator : Exploder
     {
-        protected ResourseLoader Loader;
+        protected ResourseLoader loader;
         public float timeOfLife = 2;
         public int maxBombCount = 1;
         int bombCount = 0;
 
         public BombCreator()
         {
-            Loader = new ResourseLoader();
+            loader = new ResourseLoader();
         }
 
         private void Update()
@@ -27,10 +27,10 @@ namespace Assets.Scripts
         {
             if (maxBombCount > bombCount)
             {
-                GameObject bomb = Instantiate(Loader.LoadBomb(), new Vector3(transform.position.x, transform.position.y / 2, transform.position.z), new Quaternion(0, 0, 0, 0));
+                GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, transform.position.y / 2, transform.position.z), new Quaternion(0, 0, 0, 0));
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
-                Explode(bomb, Loader.LoadExplosion(), DestroyObject);
+                Explode(bomb, loader.LoadExplosion(), DestroyObject);
                 bombCount--;
             }
         }
@@ -42,6 +42,11 @@ namespace Assets.Scripts
                 if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
                     StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
             }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Bomb")) other.isTrigger = false;
         }
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Assets.Scripts
 {
-    public abstract class AbstractMoving : MonoBehaviour
+    public abstract class AbstractMovement : MonoBehaviour
     {
         protected float moveHorizontal;
         protected float moveVertical;
 
         protected abstract void Move();
         protected abstract void Rotate();
-        protected abstract void SettingCoordinates();
+        protected abstract void SetCoordinates();
     }
 }
