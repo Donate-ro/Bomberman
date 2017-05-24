@@ -85,12 +85,13 @@
     <Compile Include="Assets\Scripts\Abstract\AbstractMovement.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractReasorceLoader.cs" />
+    <Compile Include="Assets\Scripts\Realize\Control\Rotation.cs" />
     <Compile Include="Assets\Scripts\Realize\Types\Astar.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\AutoMovement.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\BombCreator.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\Movement.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\Realize\Control\PowerUp.cs" />
+    <Compile Include="Assets\Scripts\Realize\PowerUp.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\SmartAutoMovement.cs" />
     <Compile Include="Assets\Scripts\Realize\Effects.cs" />
     <Compile Include="Assets\Scripts\Realize\Exploder.cs" />
