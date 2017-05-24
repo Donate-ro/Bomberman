@@ -17,10 +17,9 @@ namespace Assets.Scripts
             creator = new ObjectCreator(0.9f,countOfColumns,countOfRows);
             creator.CreateFloor();
             creator.CreateUnbreakableWalls();
-            if (countOfBreakableWalls <= (countOfColumns - 4) * (countOfRows - 4))
-                creator.CreateBreakableWalls(countOfBreakableWalls);
+            creator.CreateBreakableWalls(countOfBreakableWalls);
             creator.CreatePlayer();
-            //CreateEnemies(4);
+            CreateEnemies(1);
         }
 
         void CreateEnemies(int count)

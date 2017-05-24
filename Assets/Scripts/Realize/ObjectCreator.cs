@@ -32,7 +32,7 @@ namespace Assets.Scripts
         public override void CreateFloor()
         {
             GameObject floor = loader.LoadFloor();
-            floor.transform.localScale = new Vector3((rowCount + 2 * ScaleOfCube / 2) / scaleOfField, 1, (columnCount + 2 * ScaleOfCube / 2) / scaleOfField);
+            floor.transform.localScale = new Vector3((rowCount + ScaleOfCube) / scaleOfField, 1, (columnCount + ScaleOfCube) / scaleOfField);
             Instantiate(floor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         }
 
