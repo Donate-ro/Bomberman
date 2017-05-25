@@ -8,7 +8,7 @@ namespace Assets.Scripts
     class Exploder : MonoBehaviour
     {
         public float strengthOfExplosion = 1;
-        List<Vector3> directions = new List<Vector3>()
+        public static List<Vector3> directions = new List<Vector3>()
         {
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
         };

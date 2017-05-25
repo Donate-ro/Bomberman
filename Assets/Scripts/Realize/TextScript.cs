@@ -15,9 +15,15 @@ namespace Assets.Scripts
         }
         private void Update()
         {
-            if (!CheckForWin())
-                textUI.text = "Current Score: " + score.ToString();
-            else textUI.text = "YOU WIN!!!";
+
+            if (CheckForLose())
+                textUI.text = "YOU LOSE!!!";
+            else
+            {
+                if (!CheckForWin())
+                    textUI.text = "Current Score: " + score.ToString();
+                else textUI.text = "YOU WIN!!!";
+            }
         }
 
         public void AddScore(int addedScore)
@@ -31,6 +37,10 @@ namespace Assets.Scripts
             Run run = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Run>();
             winScore = run.enemiesCount * 15;
             return (score == winScore);
+        }
+        bool CheckForLose()
+        {
+            return GameObject.FindGameObjectWithTag("Player")==null;
         }
     }
 }

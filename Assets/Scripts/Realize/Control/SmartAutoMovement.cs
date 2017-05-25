@@ -33,7 +33,7 @@ namespace Assets.Scripts
         IEnumerator RefreshPath()
         {
             InitializeSmartMovement();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             StartCoroutine(RefreshPath());
         }
 

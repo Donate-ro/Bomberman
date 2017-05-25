@@ -88,7 +88,7 @@ namespace Assets.Scripts
         {
             Instantiate(loader.LoadEventSystem());
             return Instantiate(loader.LoadCanvas());
-            
+
         }
 
         void CheckAndAddBoxCollider(GameObject obj)
