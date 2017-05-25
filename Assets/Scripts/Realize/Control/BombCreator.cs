@@ -57,7 +57,15 @@ namespace Assets.Scripts
             {
                 if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
                 {
-                    PowerUp.TryToCreatePowerup(hit.transform.gameObject);
+                    if (!hit.transform.gameObject.CompareTag("Enemy"))
+                        PowerUp.TryToCreatePowerup(hit.transform.gameObject);
+                    if (hit.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        TextScript text = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>();
+                        if (hit.transform.gameObject.GetComponent<SmartAutoMovement>().isActiveAndEnabled)
+                            text.AddScore(30);
+                        else text.AddScore(15);
+                    }
                     StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
                 }
             }

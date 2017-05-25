@@ -14,8 +14,12 @@ namespace Assets.Scripts
         int columnCount;
         int dymamicObjects;
         float scaleOfField = 10f;
-
         int[,] coordinatesOfBreakableWalls;
+
+        public ObjectCreator()
+        {
+            loader = new ResourseLoader();
+        }
 
         public ObjectCreator(float cubeScale, int countOfRows, int countOfColumns)
         {
@@ -80,6 +84,12 @@ namespace Assets.Scripts
 
         }
 
+        public GameObject CreateTextScore()
+        {
+            Instantiate(loader.LoadEventSystem());
+            return Instantiate(loader.LoadCanvas());
+            
+        }
 
         void CheckAndAddBoxCollider(GameObject obj)
         {

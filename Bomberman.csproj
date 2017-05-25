@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\Abstract\AbstractObjectCreator.cs" />
     <Compile Include="Assets\Scripts\Abstract\AbstractReasorceLoader.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\Rotation.cs" />
+    <Compile Include="Assets\Scripts\Realize\TextScript.cs" />
     <Compile Include="Assets\Scripts\Realize\Types\Astar.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\AutoMovement.cs" />
     <Compile Include="Assets\Scripts\Realize\Control\BombCreator.cs" />

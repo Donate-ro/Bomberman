@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 namespace Assets.Scripts
 {
-    public class ResourseLoader : AbstractReasorceLoader
+    class ResourseLoader : AbstractReasorceLoader
     {
         public override GameObject LoadFloor()
         {
@@ -33,16 +32,16 @@ namespace Assets.Scripts
         {
             return Resources.Load("Explosion Effect") as GameObject;
         }
-        public List<GameObject> LoadPowerUps()
+
+        public GameObject LoadPowerUpByPowerup(Powerup powerup)
         {
-            List<GameObject> powerups = new List<GameObject>();
-            powerups.Add(LoadDetonator());
-            powerups.Add(LoadExplosionRadius());
-            powerups.Add(LoadMoreBombs());
-            powerups.Add(LoadSpeed());
-            powerups.Add(LoadWalkOnBombs());
-            powerups.Add(LoadWalkOnWalls());
-            return powerups;
+            if (powerup == Powerup.Detonator) return LoadDetonator();
+            if (powerup == Powerup.ExplosionRadius) return LoadExplosionRadius();
+            if (powerup == Powerup.MoreBombs) return LoadMoreBombs();
+            if (powerup == Powerup.Speed) return LoadSpeed();
+            if (powerup == Powerup.WalkOnBombs) return LoadWalkOnBombs();
+            if (powerup == Powerup.WalkOnWalls) return LoadWalkOnWalls();
+            return null;
         }
         public GameObject LoadDetonator()
         {
@@ -67,6 +66,14 @@ namespace Assets.Scripts
         public GameObject LoadWalkOnWalls()
         {
             return Resources.Load("Powerup/Walk On Walls") as GameObject;
+        }
+        public GameObject LoadCanvas()
+        {
+            return Resources.Load("Text/Canvas") as GameObject;
+        }
+        public GameObject LoadEventSystem()
+        {
+            return Resources.Load("Text/EventSystem") as GameObject;
         }
     }
 }

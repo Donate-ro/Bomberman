@@ -16,8 +16,7 @@ namespace Assets.Scripts
             bombCreator = gameObject.GetComponent<BombCreator>();
             powerUps.Add(Powerup.MoreBombs);
             powerUps.Add(Powerup.ExplosionRadius);
-            bombCreator.maxBombCount = powerUps.FindAll(s => s == Powerup.MoreBombs).Count;
-            bombCreator.strengthOfExplosion = powerUps.FindAll(s => s == Powerup.ExplosionRadius).Count;
+            RefreshCollectible();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -25,7 +24,7 @@ namespace Assets.Scripts
             if (other.CompareTag("MoreBombs"))
             {
                 AddPowerupAndHide(Powerup.MoreBombs, other);
-                bombCreator.maxBombCount = powerUps.FindAll(s => s == Powerup.MoreBombs).Count;
+                RefreshCollectible();
             }
             if (other.CompareTag("Speed"))
             {
@@ -35,16 +34,24 @@ namespace Assets.Scripts
             if (other.CompareTag("ExplosionRadius"))
             {
                 AddPowerupAndHide(Powerup.ExplosionRadius, other);
-                bombCreator.strengthOfExplosion = powerUps.FindAll(s => s == Powerup.ExplosionRadius).Count;
+                RefreshCollectible();
             }
-            if (other.CompareTag("WalkOnBombs")) AddPowerupAndHide(Powerup.WalkOnBombs, other);
-            if (other.CompareTag("WalkOnWalls")) AddPowerupAndHide(Powerup.WalkOnWalls, other);
+            if (other.CompareTag("WalkOnBombs"))
+                AddPowerupAndHide(Powerup.WalkOnBombs, other);
+            if (other.CompareTag("WalkOnWalls"))
+                AddPowerupAndHide(Powerup.WalkOnWalls, other);
             if (other.CompareTag("Detonator"))
             {
                 AddPowerupAndHide(Powerup.Detonator, other);
                 bombCreator.detonator = true;
                 bombCreator.timeOfLife = 0;
             }
+        }
+
+        void RefreshCollectible()
+        {
+            bombCreator.maxBombCount = powerUps.FindAll(s => s == Powerup.MoreBombs).Count;
+            bombCreator.strengthOfExplosion = powerUps.FindAll(s => s == Powerup.ExplosionRadius).Count;
         }
 
         void AddPowerupAndHide(Powerup powerup, Collider other)
@@ -65,10 +72,13 @@ namespace Assets.Scripts
         {
             System.Random random = new System.Random();
             ResourseLoader loader = new ResourseLoader();
-            if (random.Next(1, 2) == 1)
+            Powerup powerup;
+            Run run = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<Run>();
+            if (random.Next(1, GameObject.FindGameObjectsWithTag("BreakableWall").Length) == 1)
             {
-                int typeOfPowerUp = random.Next(0, loader.LoadPowerUps().Count);
-                Instantiate(loader.LoadPowerUps().ElementAt(typeOfPowerUp), obj.transform.position, new Quaternion(0, 0, 0, 0));
+                powerup = run.powerUps.ElementAt(random.Next(0, run.powerUps.Count));
+                Instantiate(loader.LoadPowerUpByPowerup(powerup), obj.transform.position, new Quaternion(0, 0, 0, 0));
+                run.powerUps.Remove(powerup);
             }
         }
     }
