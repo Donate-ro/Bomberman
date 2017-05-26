@@ -28,10 +28,15 @@ namespace Assets.Scripts
         {
             return Resources.Load("Bomb") as GameObject;
         }
-        public override GameObject LoadExplosion()
+        public override GameObject LoadExplosionEffect()
         {
             return Resources.Load("Explosion Effect") as GameObject;
         }
+        public GameObject LoadExplosion()
+        {
+            return Resources.Load("Explosion") as GameObject;
+        }
+
 
         public GameObject LoadPowerUpByPowerup(Powerup powerup)
         {

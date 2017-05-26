@@ -25,7 +25,7 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Explode(bombsToExplode, loader.LoadExplosion(), DestroyObject);
+                Explode(bombsToExplode, loader.LoadExplosionEffect(), DestroyObject);
                 bombCount -= bombsToExplode.Count;
                 bombsToExplode = new List<GameObject>();
             }
@@ -40,7 +40,7 @@ namespace Assets.Scripts
                 yield return new WaitForSeconds(timeOfLife);
                 if (!detonator)
                 {
-                    Explode(bomb, loader.LoadExplosion(), DestroyObject);
+                    Explode(bomb, loader.LoadExplosionEffect(), DestroyObject);
                     bombCount--;
                 }
                 else

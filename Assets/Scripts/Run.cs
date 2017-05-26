@@ -23,9 +23,13 @@ namespace Assets.Scripts
             creator.CreateUnbreakableWalls();
             creator.CreateBreakableWalls(countOfBreakableWalls);
             creator.CreatePlayer();
+            //powerUps.Add(Powerup.ExplosionRadius);
+            powerUps.Add(Powerup.Detonator);
+            //powerUps.Add(Powerup.MoreBombs);
+            powerUps.Add(Powerup.Speed);
+            powerUps.Add(Powerup.WalkOnBombs);
+            powerUps.Add(Powerup.WalkOnWalls);
             CreateEnemies(enemiesCount);
-            powerUps.Add(Powerup.ExplosionRadius);
-            powerUps.Add(Powerup.ExplosionRadius);
         }
         void CreateEnemies(int count)
         {

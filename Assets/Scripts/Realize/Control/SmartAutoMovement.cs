@@ -11,12 +11,26 @@ namespace Assets.Scripts
         int rows, columns;
         List<Point> path = new List<Point>();
         Point currentDestination, enemyPosition;
+        Point positionOfPlayer;
+        Point enemyposition;
 
         private void Start()
         {
             movementSpeed = 0.07f;
             speedOfChangingDirection = 20;
-            StartCoroutine(RefreshPath());
+            positionOfPlayer = GetPositionByTag("Player");
+            enemyposition = GetPositionByTag("Enemy");
+            //StartCoroutine(RefreshPath());
+            //StartCoroutine(MoveByChangePosition("Player"));
+        }
+
+        private void Update()
+        {
+            if (GetPositionByTag("Player") != positionOfPlayer)
+            {
+                InitializeSmartMovement();
+                positionOfPlayer = GetPositionByTag("Player");
+            }
         }
 
         protected override void SetCoordinates()
@@ -33,19 +47,41 @@ namespace Assets.Scripts
         IEnumerator RefreshPath()
         {
             InitializeSmartMovement();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
             StartCoroutine(RefreshPath());
+        }
+
+        IEnumerator MoveByChangePosition(string tag)
+        {
+            if (GetPositionByTag(tag) != positionOfPlayer)
+            {
+                InitializeSmartMovement();
+                positionOfPlayer = GetPositionByTag(tag);
+            }
+            else base.SetCoordinates();
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(MoveByChangePosition(tag));
+        }
+
+        void MakeFieldShorter()
+        {
+            
         }
 
         void InitializeSmartMovement()
         {
             GetField();
-            path = Astar.RunAstar(GetPositionByTag("Enemy"), GetPositionByTag("Player"), field);
+            path = Astar.RunAstar(GetPositionByVector3(transform.position), GetPositionByTag("Player"), field);
             if (path != null)
             {
                 TakeNextDestination();
                 enemyPosition = GetEnemyPosition();
             }
+        }
+
+        Point GetPositionByVector3(Vector3 position)
+        {
+            return new Point(Convert.ToInt32(position.x) + (columns / 2) + (columns % 2), Convert.ToInt32(position.z) + (rows / 2) + (rows % 2));
         }
 
         void CheckSetAndTakeNext()
@@ -94,6 +130,8 @@ namespace Assets.Scripts
             objects = GameObject.FindGameObjectsWithTag("BreakableWall");
             AddObjectInField(objects);
             objects = GameObject.FindGameObjectsWithTag("Bomb");
+            AddObjectInField(objects);
+            objects = GameObject.FindGameObjectsWithTag("Enemy");
             AddObjectInField(objects);
         }
 
