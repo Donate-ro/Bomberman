@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Realize\Effects.cs" />
     <Compile Include="Assets\Scripts\Realize\Exploder.cs" />
     <Compile Include="Assets\Scripts\Realize\ObjectCreator.cs" />
+    <Compile Include="Assets\Scripts\Realize\ParticleCollision.cs" />
     <Compile Include="Assets\Scripts\Realize\PlayerSearch.cs" />
     <Compile Include="Assets\Scripts\Realize\PowerUp.cs" />
     <Compile Include="Assets\Scripts\Realize\ResourseLoader.cs" />

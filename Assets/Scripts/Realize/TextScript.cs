@@ -33,10 +33,7 @@ namespace Assets.Scripts
 
         bool CheckForWin()
         {
-            int winScore = 0;
-            Run run = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Run>();
-            winScore = run.enemiesCount * 15;
-            return (score == winScore);
+            return GameObject.FindGameObjectWithTag("Enemy") == null;
         }
         bool CheckForLose()
         {

@@ -56,8 +56,8 @@ namespace Assets.Scripts
 
         void AddPowerupAndHide(Powerup powerup, Collider other)
         {
-            powerUps.Add(powerup);
             other.gameObject.SetActive(false);
+            powerUps.Add(powerup);
         }
 
         private void OnCollisionEnter(Collision collision)

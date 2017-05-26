@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,25 +50,23 @@ namespace Assets.Scripts
             }
         }
 
-        void DestroyObject(List<RaycastHit> hits)
+        public void DestroyObject(GameObject obj)
         {
-            foreach (var hit in hits)
+            if ((obj.CompareTag("BreakableWall")) || (obj.CompareTag("Player")) || (obj.CompareTag("Enemy")))
             {
-                if ((hit.collider.CompareTag("BreakableWall")) || (hit.collider.CompareTag("Player")) || (hit.collider.CompareTag("Enemy")))
+                if (!obj.CompareTag("Enemy"))
+                    PowerUp.TryToCreatePowerup(obj);
+                else
                 {
-                    if (!hit.transform.gameObject.CompareTag("Enemy"))
-                        PowerUp.TryToCreatePowerup(hit.transform.gameObject);
-                    if (hit.transform.gameObject.CompareTag("Enemy"))
-                    {
-                        TextScript text = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>();
-                        if (hit.transform.gameObject.GetComponent<SmartAutoMovement>().isActiveAndEnabled)
-                            text.AddScore(30);
-                        else text.AddScore(15);
-                    }
-                    StartCoroutine(Effects.FadeEffect(hit.transform.gameObject));
+                    TextScript text = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>();
+                    if (obj.GetComponent<SmartAutoMovement>().isActiveAndEnabled)
+                        text.AddScore(30);
+                    else text.AddScore(15);
                 }
+                StartCoroutine(Effects.FadeEffect(obj));
             }
         }
+
 
         private void OnTriggerExit(Collider other)
         {

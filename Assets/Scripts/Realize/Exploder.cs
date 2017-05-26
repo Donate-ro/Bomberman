@@ -13,7 +13,7 @@ namespace Assets.Scripts
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
         };
 
-        public void Explode(GameObject bomb, GameObject explosion, Action<List<RaycastHit>> action = null)
+        public void Explode(GameObject bomb, GameObject explosion, Action<GameObject> action = null)
         {
             bomb.SetActive(false);
             Destroy(bomb);
@@ -24,10 +24,13 @@ namespace Assets.Scripts
             }
             Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
             if (action != null)
-                action(FindCollisions(bomb.transform.position));
+            {
+                foreach (var hit in FindCollisions(bomb.transform.position))
+                    action(hit.transform.gameObject);
+            }
         }
 
-        public void Explode(List<GameObject> bombs, GameObject explosion, Action<List<RaycastHit>> action = null)
+        public void Explode(List<GameObject> bombs, GameObject explosion, Action<GameObject> action = null)
         {
             foreach (GameObject bomb in bombs)
                 Explode(bomb, explosion, action);
