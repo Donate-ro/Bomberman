@@ -7,7 +7,7 @@ namespace Assets.Scripts
         public abstract void CreateFloor();
         public abstract void CreateUnbreakableWalls();
         public abstract void CreateBreakableWalls(int countOfBreakableWalls);
-        abstract public void CreatePlayer();
-        abstract public void CreateEnemy();
+        public abstract void CreatePlayer();
+        public abstract void CreateEnemy();
     }
 }

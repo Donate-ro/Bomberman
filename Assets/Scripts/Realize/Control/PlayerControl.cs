@@ -5,12 +5,8 @@ namespace Assets.Scripts
     {
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Enemy") gameObject.SetActive(false);
+            if (collision.gameObject.tag == "Enemy") GetComponent<BombCreator>().DestroyObject(gameObject);
         }
-        //private void OnParticleCollision(GameObject other)
-        //{
-        //    if ((other.CompareTag("Player")) || (other.CompareTag("BreakableWall")) || (other.CompareTag("Enemy"))) other.SetActive(false); //StartCoroutine(Effects.FadeEffect(other));
-        //}
     }
 
 }

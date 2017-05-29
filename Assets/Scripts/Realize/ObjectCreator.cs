@@ -77,6 +77,12 @@ namespace Assets.Scripts
             CreateDynamicObjects(enemy);
         }
 
+        public void CreateEnemies(int enemiesCount)
+        {
+            for (int i = 0; i < enemiesCount; i++)
+                CreateEnemy();
+        }
+
         public override void CreatePlayer()
         {
             GameObject player = loader.LoadPlayer();

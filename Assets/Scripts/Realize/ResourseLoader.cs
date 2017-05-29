@@ -15,7 +15,6 @@ namespace Assets.Scripts
         {
             return Resources.Load("Walls/Breakable Wall") as GameObject;
         }
-
         public override GameObject LoadPlayer()
         {
             return Resources.Load("Players/Player") as GameObject;
@@ -28,7 +27,7 @@ namespace Assets.Scripts
         {
             return Resources.Load("Bomb") as GameObject;
         }
-        public override GameObject LoadExplosionEffect()
+        public GameObject LoadExplosionEffect()
         {
             return Resources.Load("Explosion Effect") as GameObject;
         }
@@ -36,9 +35,7 @@ namespace Assets.Scripts
         {
             return Resources.Load("Explosion") as GameObject;
         }
-
-
-        public GameObject LoadPowerUpByPowerup(Powerup powerup)
+        public GameObject LoadPowerup(Powerup powerup)
         {
             if (powerup == Powerup.Detonator) return LoadDetonator();
             if (powerup == Powerup.ExplosionRadius) return LoadExplosionRadius();

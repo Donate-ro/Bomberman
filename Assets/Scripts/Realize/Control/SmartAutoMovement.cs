@@ -10,28 +10,31 @@ namespace Assets.Scripts
         int[,] field;
         int rows, columns;
         List<Point> path = new List<Point>();
-        Point currentDestination, enemyPosition;
+        Point nextPoint, enemyPosition;
         Point positionOfPlayer;
-        Point enemyposition;
+        Run run;
 
         private void Start()
         {
+            run = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Run>();
+            rows = run.countOfRows;
+            columns = run.countOfColumns;
             movementSpeed = 0.07f;
             speedOfChangingDirection = 20;
-            positionOfPlayer = GetPositionByTag("Player");
-            enemyposition = GetPositionByTag("Enemy");
-            //StartCoroutine(RefreshPath());
-            //StartCoroutine(MoveByChangePosition("Player"));
+            positionOfPlayer = GetPlayerPosition();
+            enemyPosition = GetEnemyPosition();
+            StartCoroutine(RefreshPath());
+            //StartCoroutine(MoveByChangePosition());
         }
 
-        private void Update()
-        {
-            if (GetPositionByTag("Player") != positionOfPlayer)
-            {
-                InitializeSmartMovement();
-                positionOfPlayer = GetPositionByTag("Player");
-            }
-        }
+        //private void Update()
+        //{
+        //    if (GetPlayerPosition() != positionOfPlayer)
+        //    {
+        //        InitializeSmartMovement();
+        //        positionOfPlayer = GetPlayerPosition();
+        //    }
+        //}
 
         protected override void SetCoordinates()
         {
@@ -51,27 +54,22 @@ namespace Assets.Scripts
             StartCoroutine(RefreshPath());
         }
 
-        IEnumerator MoveByChangePosition(string tag)
+        IEnumerator MoveByChangePosition()
         {
-            if (GetPositionByTag(tag) != positionOfPlayer)
+            if (GetPlayerPosition() != positionOfPlayer)
             {
                 InitializeSmartMovement();
-                positionOfPlayer = GetPositionByTag(tag);
+                positionOfPlayer = GetPlayerPosition();
             }
             else base.SetCoordinates();
             yield return new WaitForSeconds(0.5f);
-            StartCoroutine(MoveByChangePosition(tag));
-        }
-
-        void MakeFieldShorter()
-        {
-            
+            StartCoroutine(MoveByChangePosition());
         }
 
         void InitializeSmartMovement()
         {
             GetField();
-            path = Astar.RunAstar(GetPositionByVector3(transform.position), GetPositionByTag("Player"), field);
+            path = Astar.RunAstar(GetEnemyPosition(),GetPlayerPosition(), field);
             if (path != null)
             {
                 TakeNextDestination();
@@ -79,51 +77,43 @@ namespace Assets.Scripts
             }
         }
 
-        Point GetPositionByVector3(Vector3 position)
-        {
-            return new Point(Convert.ToInt32(position.x) + (columns / 2) + (columns % 2), Convert.ToInt32(position.z) + (rows / 2) + (rows % 2));
-        }
-
         void CheckSetAndTakeNext()
         {
-            if ((enemyPosition.Y + 1) == currentDestination.Y)
+            if ((enemyPosition.Y + 1) == nextPoint.Y)
             {
                 moveHorizontal = 0;
                 moveVertical = 1;
             }
 
-            if ((enemyPosition.Y - 1) == currentDestination.Y)
+            if ((enemyPosition.Y - 1) == nextPoint.Y)
             {
                 moveHorizontal = 0;
                 moveVertical = -1;
             }
 
-            if ((enemyPosition.X - 1) == currentDestination.X)
+            if ((enemyPosition.X - 1) == nextPoint.X)
             {
                 moveHorizontal = -1;
                 moveVertical = 0;
             }
 
-            if ((enemyPosition.X + 1) == currentDestination.X)
+            if ((enemyPosition.X + 1) == nextPoint.X)
             {
                 moveHorizontal = 1;
                 moveVertical = 0;
             }
-            if (currentDestination == enemyPosition)
+            if (nextPoint == enemyPosition)
                 TakeNextDestination();
         }
 
         void TakeNextDestination()
         {
-            currentDestination = path.ElementAt(0);
+            nextPoint = path.ElementAt(0);
             path.RemoveAt(0);
         }
 
         void GetField()
         {
-            Run run = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Run>();
-            rows = run.countOfRows;
-            columns = run.countOfColumns;
             field = new int[columns + 1, rows + 1];
             GameObject[] objects = GameObject.FindGameObjectsWithTag("Wall");
             AddObjectInField(objects);
@@ -135,26 +125,27 @@ namespace Assets.Scripts
             AddObjectInField(objects);
         }
 
-        void AddObjectInField(GameObject[] walls)
+        void AddObjectInField(GameObject[] objects)
         {
-            foreach (var wall in walls)
+            foreach (var obj in objects)
             {
-                int x = Convert.ToInt32(wall.transform.position.x) + (columns / 2) + (columns % 2);
-                int y = Convert.ToInt32(wall.transform.position.z) + (rows / 2) + (rows % 2);
-                field[x, y] = 1;
+                field[GetPosition(obj.transform.position).X, GetPosition(obj.transform.position).Y] = 1;
             }
         }
 
-        Point GetPositionByTag(string tag)
+        Point GetPosition(Vector3 position)
         {
-            Vector3 position = GameObject.FindGameObjectsWithTag(tag)[0].transform.position;
-            return new Point(Convert.ToInt32(position.x) + (columns / 2) + (columns % 2), Convert.ToInt32(position.z) + (rows / 2) + (rows % 2));
+            return new Point(Convert.ToInt32(position.x) + (columns / 2), Convert.ToInt32(position.z) + (rows / 2));
         }
 
         Point GetEnemyPosition()
         {
-            Vector3 position = transform.position;
-            return new Point(Convert.ToInt32(position.x) + (columns / 2) + (columns % 2), Convert.ToInt32(position.z) + (rows / 2) + (rows % 2));
+            return GetPosition(transform.position);
+        }
+
+        Point GetPlayerPosition()
+        {
+            return GetPosition(GameObject.FindGameObjectWithTag("Player").transform.position);
         }
     }
 }

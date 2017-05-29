@@ -61,7 +61,6 @@ namespace Assets.Scripts
                 bombCreator.detonator = true;
                 bombCreator.timeOfLife = 0;
                 SetActiveSkinOfPowerup("Detonator");
-
             }
         }
 
@@ -81,7 +80,7 @@ namespace Assets.Scripts
         {
             GameObject sparks = new GameObject();
             foreach (Transform child in transform)
-                if (child.CompareTag("Sparks")) sparks=child.gameObject;
+                if (child.CompareTag("Sparks")) sparks = child.gameObject;
             sparks.SetActive(true);
             yield return new WaitForSeconds(2f);
             sparks.SetActive(false);
@@ -90,7 +89,7 @@ namespace Assets.Scripts
         void AddPowerupAndHide(Powerup powerup, Collider other)
         {
             StartCoroutine(ShowSparks());
-            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>().ShowAndClearPowerupText(other.gameObject.tag));
+            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>().ShowPowerupText(other.gameObject.tag));
             ResourseLoader loader = new ResourseLoader();
             gameObject.GetComponent<Exploder>().Explode(other.gameObject, loader.LoadExplosion());
             powerUps.Add(powerup);
@@ -120,7 +119,7 @@ namespace Assets.Scripts
             Powerup powerup;
             int rand = random.Next(0, run.powerUps.Count);
             powerup = run.powerUps.ElementAt(rand);
-            Instantiate(loader.LoadPowerUpByPowerup(powerup), obj.transform.position, new Quaternion(0, 0, 0, 0));
+            Instantiate(loader.LoadPowerup(powerup), obj.transform.position, new Quaternion(0, 0, 0, 0));
             run.powerUps.Remove(powerup);
         }
     }

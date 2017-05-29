@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -9,32 +8,29 @@ namespace Assets.Scripts
         public int countOfRows;
         public int countOfColumns;
         public int countOfBreakableWalls;
-        public int enemiesCount = 2;
+        public int enemiesCount;
         ObjectCreator creator;
         public List<Powerup> powerUps = new List<Powerup>();
 
         void Start()
         {
             Camera cam = Camera.main;
-            if (countOfColumns >= countOfRows) cam.transform.position = new Vector3(0, countOfColumns / 2, -countOfColumns / 2);
-            else cam.transform.position = new Vector3(0, countOfRows, -countOfRows);
+            float cameraPositionAttitude = 1.5f;
+            if (countOfColumns >= countOfRows) cam.transform.position = new Vector3(0, countOfColumns / cameraPositionAttitude, -countOfColumns / cameraPositionAttitude);
+            else cam.transform.position = new Vector3(0, countOfRows / cameraPositionAttitude, -countOfRows / cameraPositionAttitude);
             creator = new ObjectCreator(0.9f, countOfColumns, countOfRows);
             creator.CreateFloor();
             creator.CreateUnbreakableWalls();
             creator.CreateBreakableWalls(countOfBreakableWalls);
             creator.CreatePlayer();
-            //powerUps.Add(Powerup.ExplosionRadius);
+            creator.CreateEnemies(enemiesCount);
             powerUps.Add(Powerup.Detonator);
-            //powerUps.Add(Powerup.MoreBombs);
+            powerUps.Add(Powerup.ExplosionRadius);
+            powerUps.Add(Powerup.MoreBombs);
             powerUps.Add(Powerup.Speed);
             powerUps.Add(Powerup.WalkOnBombs);
             powerUps.Add(Powerup.WalkOnWalls);
-            CreateEnemies(enemiesCount);
         }
-        void CreateEnemies(int count)
-        {
-            for (int i = 0; i < count; i++)
-                creator.CreateEnemy();
-        }
+
     }
 }

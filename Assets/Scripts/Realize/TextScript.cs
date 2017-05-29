@@ -23,12 +23,9 @@ namespace Assets.Scripts
                 textUI = texts[0];
                 powerupText = texts[1];
             }
-
-            
         }
         private void Update()
         {
-
             if (CheckForLose())
                 textUI.text = "YOU LOSE!!!";
             else
@@ -39,14 +36,12 @@ namespace Assets.Scripts
             }
         }
 
-        public IEnumerator ShowAndClearPowerupText(string typeOfPowerup)
+        public IEnumerator ShowPowerupText(string typeOfPowerup)
         {
-            powerupText.text = "You got "+typeOfPowerup;
+            powerupText.text = "You got " + typeOfPowerup;
             yield return new WaitForSeconds(3f);
             powerupText.text = "";
         }
-
-
 
         public void AddScore(int addedScore)
         {
@@ -59,7 +54,7 @@ namespace Assets.Scripts
         }
         bool CheckForLose()
         {
-            return GameObject.FindGameObjectWithTag("Player")==null;
+            return GameObject.FindGameObjectWithTag("Player") == null;
         }
     }
 }
