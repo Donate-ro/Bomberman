@@ -21,7 +21,10 @@ namespace Assets.Scripts
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
+            {
+                gameObject.GetComponent<Animator>().SetTrigger("SetOrGet");
                 StartCoroutine(CreateBomb());
+            }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -35,7 +38,7 @@ namespace Assets.Scripts
         {
             if (maxBombCount > bombCount)
             {
-                GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, transform.position.y / 2, transform.position.z), new Quaternion(0, 0, 0, 0));
+                GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, 0.5f, transform.position.z), new Quaternion(0, 0, 0, 0));
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
                 if (!detonator)
@@ -54,14 +57,21 @@ namespace Assets.Scripts
         {
             if ((obj.CompareTag("BreakableWall")) || (obj.CompareTag("Player")) || (obj.CompareTag("Enemy")))
             {
-                if (!obj.CompareTag("Enemy"))
+                if (obj.CompareTag("BreakableWall"))
                     PowerUp.TryToCreatePowerup(obj);
-                else
+                if (obj.CompareTag("Player"))
+                {
+                    gameObject.GetComponent<Animator>().SetTrigger("Death");
+                    StartCoroutine(Effects.FadeEffect(obj.transform.GetChild(1).gameObject));
+                }
+                if (obj.CompareTag("Enemy"))
                 {
                     TextScript text = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>();
-                    if (obj.GetComponent<SmartAutoMovement>().isActiveAndEnabled)
+                    if (obj.transform.GetChild(1).GetComponent<SmartAutoMovement>()!=null)
                         text.AddScore(30);
                     else text.AddScore(15);
+                    obj.GetComponent<Animator>().SetTrigger("Death");
+                    StartCoroutine(Effects.FadeEffect(obj.transform.GetChild(1).gameObject));
                 }
                 StartCoroutine(Effects.FadeEffect(obj));
             }

@@ -5,7 +5,11 @@ namespace Assets.Scripts
     {
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Enemy") GetComponent<BombCreator>().DestroyObject(gameObject);
+            if (collision.gameObject.tag == "Enemy")
+            {
+                collision.gameObject.GetComponent<Animator>().SetTrigger("Attack");
+                GetComponent<BombCreator>().DestroyObject(gameObject);
+            }
         }
     }
 

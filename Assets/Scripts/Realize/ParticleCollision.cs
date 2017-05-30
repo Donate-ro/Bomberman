@@ -6,7 +6,7 @@ namespace Assets.Scripts
     {
         private void OnParticleCollision(GameObject other)
         {
-            if (other.GetComponent<Collider>().CompareTag("Player") || other.GetComponent<Collider>().CompareTag("Enemy"))
+            if (other.transform.GetChild(1).GetComponent<Collider>().CompareTag("Player") || other.transform.GetChild(1).GetComponent<Collider>().CompareTag("Enemy"))
                 GameObject.FindGameObjectWithTag("Player").GetComponent<BombCreator>().DestroyObject(other);
         }
     }

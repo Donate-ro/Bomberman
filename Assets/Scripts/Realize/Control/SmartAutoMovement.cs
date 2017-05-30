@@ -19,7 +19,7 @@ namespace Assets.Scripts
             run = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Run>();
             rows = run.countOfRows;
             columns = run.countOfColumns;
-            movementSpeed = 0.07f;
+            movementSpeed = 0.05f;
             speedOfChangingDirection = 20;
             positionOfPlayer = GetPlayerPosition();
             enemyPosition = GetEnemyPosition();

@@ -17,11 +17,11 @@ namespace Assets.Scripts
         }
         public override GameObject LoadPlayer()
         {
-            return Resources.Load("Players/Player") as GameObject;
+            return Resources.Load("Players/Player1") as GameObject;
         }
         public override GameObject LoadEnemy()
         {
-            return Resources.Load("Players/Enemy") as GameObject;
+            return Resources.Load("Players/Enemy1") as GameObject;
         }
         public override GameObject LoadBomb()
         {

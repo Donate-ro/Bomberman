@@ -74,7 +74,7 @@ namespace Assets.Scripts
         public override void CreateEnemy()
         {
             GameObject enemy = loader.LoadEnemy();
-            CreateDynamicObjects(enemy);
+            CreateDynamicObjects(enemy,0);
         }
 
         public void CreateEnemies(int enemiesCount)
@@ -86,7 +86,7 @@ namespace Assets.Scripts
         public override void CreatePlayer()
         {
             GameObject player = loader.LoadPlayer();
-            CreateDynamicObjects(player);
+            CreateDynamicObjects(player,0);
 
         }
 
@@ -104,13 +104,13 @@ namespace Assets.Scripts
             obj.GetComponent<BoxCollider>().size = new Vector3(ScaleOfCube, ScaleOfCube, ScaleOfCube);
         }
 
-        void CreateDynamicObjects(GameObject obj)
+        void CreateDynamicObjects(GameObject obj, float scale=1)
         {
             obj.GetComponent<Rigidbody>().drag = 1;
             bool check = false;
             while (!check)
             {
-                check = GeneratePositionOfDynamicObject(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, 1);
+                check = GeneratePositionOfDynamicObject(obj, coordinatesOfBreakableWalls.Length / 2 - dymamicObjects - 1, scale);
             }
             dymamicObjects++;
         }

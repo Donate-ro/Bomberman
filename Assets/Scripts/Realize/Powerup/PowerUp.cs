@@ -98,9 +98,9 @@ namespace Assets.Scripts
         private void OnCollisionEnter(Collision collision)
         {
             if (powerUps.Contains(Powerup.WalkOnWalls))
-                if (collision.gameObject.tag == "BreakableWall") Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
+                if (collision.gameObject.tag == "BreakableWall") Physics.IgnoreCollision(gameObject.transform.GetChild(1).GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
             if (powerUps.Contains(Powerup.WalkOnBombs))
-                if (collision.gameObject.tag == "Bomb") Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
+                if (collision.gameObject.tag == "Bomb") Physics.IgnoreCollision(gameObject.transform.GetChild(1).GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
         }
 
         public static void TryToCreatePowerup(GameObject obj)
