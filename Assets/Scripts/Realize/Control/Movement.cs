@@ -4,7 +4,7 @@ namespace Assets.Scripts
     abstract class Movement : AbstractMovement
     {
         public float movementSpeed = 0.07f;
-        Animator animator;
+        protected Animator animator;
         protected AudioSource audioSource;
         private void FixedUpdate()
         {

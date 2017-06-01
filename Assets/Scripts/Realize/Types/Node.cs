@@ -18,7 +18,7 @@ namespace Assets.Scripts
             ApproximatePathLength = approximatePathLength;
         }
 
-        public static List<Node> GetNeighbours(Node pathNode, Point goal, int[,] field)
+        public static List<Node> GetNeighbours(Node pathNode, Point goal, bool[,] field)
         {
             var result = new List<Node>();
 
@@ -34,7 +34,7 @@ namespace Assets.Scripts
                     continue;
                 if (point.Y < 0 || point.Y >= field.GetLength(1))
                     continue;
-                if (field[point.X, point.Y] != 0)
+                if (field[point.X, point.Y])
                     continue;
                 var neighbourNode = new Node(point, pathNode, pathNode.PathLengthFromStart + 1,
                     GetPathLength(point, goal));

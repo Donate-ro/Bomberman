@@ -6,7 +6,7 @@ namespace Assets.Scripts
 {
     static class Astar
     {
-        public static List<Point> RunAstar(Point start, Point goal, int[,] field)
+        public static List<Point> RunAstar(Point start, Point goal, bool[,] field)
         {
             List<Node> closedSet = new List<Node>();
             List<Node> openSet = new List<Node>();

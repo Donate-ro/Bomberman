@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     class SmartAutoMovement : AutoMovement
     {
-        int[,] field;
+        bool[,] field, baseField;
         int rows, columns;
         List<Point> path = new List<Point>();
         Point nextPoint, enemyPosition;
@@ -16,6 +16,8 @@ namespace Assets.Scripts
 
         private void Start()
         {
+            animator = gameObject.GetComponent<Animator>();
+            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
             run = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Run>();
             rows = run.countOfRows;
             columns = run.countOfColumns;
@@ -23,12 +25,15 @@ namespace Assets.Scripts
             speedOfChangingDirection = 20;
             positionOfPlayer = GetPlayerPosition();
             enemyPosition = GetEnemyPosition();
+            GetBaseField();
             //StartCoroutine(RefreshPath());
             //StartCoroutine(MoveByChangePosition());
         }
 
         private void Update()
         {
+            if (((moveHorizontal > 0) || (moveVertical > 0)) || ((moveHorizontal < 0) || (moveVertical < 0))) animator.SetFloat("Movement", 1.1f);
+            else animator.SetFloat("Movement", 0);
             if (GetPlayerPosition() != positionOfPlayer)
             {
                 InitializeSmartMovement();
@@ -38,7 +43,7 @@ namespace Assets.Scripts
 
         protected override void SetCoordinates()
         {
-            if (path == null)
+            if (!gameObject.GetComponent<PlayerSearch>().isPlayerFound)
                 base.SetCoordinates();
             else
             {
@@ -70,7 +75,7 @@ namespace Assets.Scripts
         {
             GetField();
             path = Astar.RunAstar(GetEnemyPosition(), GetPlayerPosition(), field);
-            if (path != null)
+            if ((path != null) && (path.Count >= 1))
             {
                 TakeNextDestination();
                 enemyPosition = GetEnemyPosition();
@@ -102,34 +107,48 @@ namespace Assets.Scripts
                 moveHorizontal = 1;
                 moveVertical = 0;
             }
-            if (nextPoint == enemyPosition)
+            if ((nextPoint == enemyPosition) && (path.Count >= 1))
                 TakeNextDestination();
         }
 
         void TakeNextDestination()
         {
+
             nextPoint = path.ElementAt(0);
             path.RemoveAt(0);
         }
 
-        void GetField()
+        void GetBaseField()
         {
-            field = new int[columns + 1, rows + 1];
+            baseField = new bool[columns + 1, rows + 1];
+            field = new bool[columns + 1, rows + 1];
             GameObject[] objects = GameObject.FindGameObjectsWithTag("Wall");
-            AddObjectInField(objects);
-            objects = GameObject.FindGameObjectsWithTag("BreakableWall");
-            AddObjectInField(objects);
-            objects = GameObject.FindGameObjectsWithTag("Bomb");
-            AddObjectInField(objects);
-            objects = GameObject.FindGameObjectsWithTag("Enemy");
-            AddObjectInField(objects);
+            AddObjectInField(objects, ref baseField);
         }
 
-        void AddObjectInField(GameObject[] objects)
+        void RefreshField()
+        {
+            for (int i = 0; i < field.GetLength(0); i++)
+                for (int j = 0; j < field.GetLength(1); j++)
+                    field[i, j] = baseField[i, j];
+        }
+
+        void GetField()
+        {
+            RefreshField();
+            GameObject[] objects = GameObject.FindGameObjectsWithTag("BreakableWall");
+            AddObjectInField(objects, ref field);
+            objects = GameObject.FindGameObjectsWithTag("Bomb");
+            AddObjectInField(objects, ref field);
+            objects = GameObject.FindGameObjectsWithTag("Enemy");
+            AddObjectInField(objects, ref field);
+        }
+
+        void AddObjectInField(GameObject[] objects, ref bool[,] field)
         {
             foreach (var obj in objects)
             {
-                field[GetPosition(obj.transform.position).X, GetPosition(obj.transform.position).Y] = 1;
+                field[GetPosition(obj.transform.position).X, GetPosition(obj.transform.position).Y] = true;
             }
         }
 
