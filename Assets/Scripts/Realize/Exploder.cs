@@ -13,7 +13,7 @@ namespace Assets.Scripts
             Vector3.forward, Vector3.back,Vector3.left,Vector3.right
         };
 
-        public void Explode(GameObject bomb, GameObject explosion, Action<GameObject> action = null)
+        public void Explode(GameObject bomb, GameObject explosion, Action<GameObject> action = null, AudioClip clip = null)
         {
             bomb.SetActive(false);
             Destroy(bomb);
@@ -22,12 +22,21 @@ namespace Assets.Scripts
             {
                 particleSystem.startSpeed = strengthOfExplosion;
             }
-            Destroy(Instantiate(explosion, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
+            if (!clip) clip = AudioLoader.LoadBombExplosion();
+            Destroy(CreateObjectAndSound(explosion, bomb.transform.position, clip), 1);
             if (action != null)
             {
                 foreach (var hit in FindCollisions(bomb.transform.position))
                     action(hit.transform.gameObject);
             }
+        }
+
+        GameObject CreateObjectAndSound(GameObject obj, Vector3 position, AudioClip clip)
+        {
+            var explosion = Instantiate(obj, position, new Quaternion(0, 0, 0, 0));
+            explosion.AddComponent<AudioSource>();
+            explosion.GetComponent<AudioSource>().PlayOneShot(clip);
+            return explosion;
         }
 
         public void Explode(List<GameObject> bombs, GameObject explosion, Action<GameObject> action = null)

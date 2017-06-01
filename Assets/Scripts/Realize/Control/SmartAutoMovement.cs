@@ -23,22 +23,22 @@ namespace Assets.Scripts
             speedOfChangingDirection = 20;
             positionOfPlayer = GetPlayerPosition();
             enemyPosition = GetEnemyPosition();
-            StartCoroutine(RefreshPath());
+            //StartCoroutine(RefreshPath());
             //StartCoroutine(MoveByChangePosition());
         }
 
-        //private void Update()
-        //{
-        //    if (GetPlayerPosition() != positionOfPlayer)
-        //    {
-        //        InitializeSmartMovement();
-        //        positionOfPlayer = GetPlayerPosition();
-        //    }
-        //}
+        private void Update()
+        {
+            if (GetPlayerPosition() != positionOfPlayer)
+            {
+                InitializeSmartMovement();
+                positionOfPlayer = GetPlayerPosition();
+            }
+        }
 
         protected override void SetCoordinates()
         {
-            if (path==null)
+            if (path == null)
                 base.SetCoordinates();
             else
             {
@@ -69,7 +69,7 @@ namespace Assets.Scripts
         void InitializeSmartMovement()
         {
             GetField();
-            path = Astar.RunAstar(GetEnemyPosition(),GetPlayerPosition(), field);
+            path = Astar.RunAstar(GetEnemyPosition(), GetPlayerPosition(), field);
             if (path != null)
             {
                 TakeNextDestination();

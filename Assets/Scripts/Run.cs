@@ -11,6 +11,8 @@ namespace Assets.Scripts
         public int enemiesCount;
         ObjectCreator creator;
         public List<Powerup> powerUps = new List<Powerup>();
+        public bool isPlayerDead = false;
+        public List<int> killedEnemies = new List<int>();
 
         void Start()
         {

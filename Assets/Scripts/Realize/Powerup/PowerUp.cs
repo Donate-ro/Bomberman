@@ -9,7 +9,7 @@ namespace Assets.Scripts
         BombCreator bombCreator;
         PlayerControl playerControl;
         public List<Powerup> powerUps = new List<Powerup>();
-        float maxSpeed = 0.15f;
+        float maxSpeed = 0.085f;
         static System.Random random = new System.Random();
         static Run run;
         static ResourseLoader loader;
@@ -36,6 +36,7 @@ namespace Assets.Scripts
             {
                 AddPowerupAndHide(Powerup.Speed, other);
                 playerControl.movementSpeed = maxSpeed;
+                gameObject.GetComponent<Animator>().SetFloat("SpeedMultiplier", 1.1f);
                 SetActiveSkinOfPowerup("Foot");
 
             }
@@ -91,7 +92,7 @@ namespace Assets.Scripts
             StartCoroutine(ShowSparks());
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>().ShowPowerupText(other.gameObject.tag));
             ResourseLoader loader = new ResourseLoader();
-            gameObject.GetComponent<Exploder>().Explode(other.gameObject, loader.LoadExplosion());
+            gameObject.GetComponent<Exploder>().Explode(other.gameObject, loader.LoadExplosion(), null, AudioLoader.LoadCoin());
             powerUps.Add(powerup);
         }
 

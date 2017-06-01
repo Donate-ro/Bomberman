@@ -39,5 +39,14 @@ namespace Assets.Scripts
         {
             if ((collision.gameObject.tag == "Enemy") || (wallCollision)) RandomCoordinates();
         }
+
+        public override void LeftStep()
+        {
+            audioSource.PlayOneShot(AudioLoader.LoadEnemyLeftStep());
+        }
+        public override void RightStep()
+        {
+            audioSource.PlayOneShot(AudioLoader.LoadEnemyRightStep());
+        }
     }
 }

@@ -7,15 +7,20 @@ namespace Assets.Scripts
     class BombCreator : Exploder
     {
         protected ResourseLoader loader;
+        Run run;
+        TextScript text;
         public float timeOfLife = 2;
         public int maxBombCount = 1;
         int bombCount = 0;
         public bool detonator;
         List<GameObject> bombsToExplode = new List<GameObject>();
 
-        public BombCreator()
+        private void Start()
         {
+            GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            run = mainCamera.GetComponent<Run>();
             loader = new ResourseLoader();
+            text = mainCamera.GetComponent<TextScript>();
         }
 
         private void Update()
@@ -38,7 +43,9 @@ namespace Assets.Scripts
         {
             if (maxBombCount > bombCount)
             {
-                GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, 0.5f, transform.position.z), new Quaternion(0, 0, 0, 0));
+                GameObject bomb = Instantiate(loader.LoadBomb(), new Vector3(transform.position.x, 0.25f, transform.position.z), new Quaternion(0, 0, 0, 0));
+                bomb.AddComponent<AudioSource>();
+                bomb.GetComponent<AudioSource>().PlayOneShot(AudioLoader.LoadBombSetup());
                 bombCount++;
                 yield return new WaitForSeconds(timeOfLife);
                 if (!detonator)
@@ -57,23 +64,33 @@ namespace Assets.Scripts
         {
             if ((obj.CompareTag("BreakableWall")) || (obj.CompareTag("Player")) || (obj.CompareTag("Enemy")))
             {
-                if (obj.CompareTag("BreakableWall"))
-                    PowerUp.TryToCreatePowerup(obj);
-                if (obj.CompareTag("Player"))
+                if (!run.killedEnemies.Contains(obj.GetInstanceID()))
                 {
-                    gameObject.GetComponent<Animator>().SetTrigger("Death");
-                    StartCoroutine(Effects.FadeEffect(obj.transform.GetChild(1).gameObject));
+                    run.killedEnemies.Add(obj.GetInstanceID());
+                    if (obj.CompareTag("BreakableWall"))
+                    {
+                        PowerUp.TryToCreatePowerup(obj);
+                        StartCoroutine(Effects.FadeEffect(obj));
+                    }
+                    if (obj.CompareTag("Player"))
+                    {
+                        Effects.PlayerDeath(obj);
+                    }
+                    if (obj.CompareTag("Enemy"))
+                    {
+                        if (obj.transform.GetChild(1).GetComponent<SmartAutoMovement>() != null)
+                            text.AddScore(30);
+                        else text.AddScore(15);
+                        if (GameObject.FindGameObjectsWithTag("Enemy").Length / 2 == 1)
+                        {
+                            gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>().PlayOneShot(AudioLoader.LoadPlayerWin());
+                            gameObject.GetComponent<Animator>().SetTrigger("Win");
+                        }
+                        obj.GetComponent<Animator>().SetTrigger("Death");
+                        obj.transform.GetChild(1).gameObject.GetComponent<AudioSource>().PlayOneShot(AudioLoader.LoadEnemyDead());
+                        StartCoroutine(Effects.FadeEffect(obj.transform.GetChild(1).gameObject));
+                    }
                 }
-                if (obj.CompareTag("Enemy"))
-                {
-                    TextScript text = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>();
-                    if (obj.transform.GetChild(1).GetComponent<SmartAutoMovement>()!=null)
-                        text.AddScore(30);
-                    else text.AddScore(15);
-                    obj.GetComponent<Animator>().SetTrigger("Death");
-                    StartCoroutine(Effects.FadeEffect(obj.transform.GetChild(1).gameObject));
-                }
-                StartCoroutine(Effects.FadeEffect(obj));
             }
         }
 

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 namespace Assets.Scripts
 {
-    class Movement : AbstractMovement
+    abstract class Movement : AbstractMovement
     {
         public float movementSpeed = 0.07f;
         Animator animator;
-
+        protected AudioSource audioSource;
         private void FixedUpdate()
         {
             SetCoordinates();
@@ -22,6 +22,7 @@ namespace Assets.Scripts
         private void Start()
         {
             animator = gameObject.GetComponent<Animator>();
+            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
         }
 
         protected override void Move()
@@ -62,5 +63,7 @@ namespace Assets.Scripts
             }
             return 0;
         }
+        public abstract void LeftStep();
+        public abstract void RightStep();
     }
 }

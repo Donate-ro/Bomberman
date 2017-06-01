@@ -54,7 +54,7 @@ namespace Assets.Scripts
         }
         bool CheckForLose()
         {
-            return GameObject.FindGameObjectWithTag("Player") == null;
+            return GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Run>().isPlayerDead;
         }
     }
 }
