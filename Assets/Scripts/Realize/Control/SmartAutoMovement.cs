@@ -14,11 +14,18 @@ namespace Assets.Scripts
         Point positionOfPlayer;
         Run run;
 
+        public override void LeftStep()
+        {
+            base.LeftStep();
+        }
+        public override void RightStep()
+        {
+            base.RightStep();
+        }
+
         private void Start()
         {
-            animator = gameObject.GetComponent<Animator>();
-            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
-            run = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Run>();
+            run = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Run>();
             rows = run.countOfRows;
             columns = run.countOfColumns;
             movementSpeed = 0.05f;
@@ -26,19 +33,18 @@ namespace Assets.Scripts
             positionOfPlayer = GetPlayerPosition();
             enemyPosition = GetEnemyPosition();
             GetBaseField();
-            //StartCoroutine(RefreshPath());
-            //StartCoroutine(MoveByChangePosition());
         }
 
         private void Update()
         {
             if (((moveHorizontal > 0) || (moveVertical > 0)) || ((moveHorizontal < 0) || (moveVertical < 0))) animator.SetFloat("Movement", 1.1f);
             else animator.SetFloat("Movement", 0);
-            if (GetPlayerPosition() != positionOfPlayer)
-            {
-                InitializeSmartMovement();
-                positionOfPlayer = GetPlayerPosition();
-            }
+            if (!field[GetPlayerPosition().X,GetPlayerPosition().Y])
+                if (GetPlayerPosition() != positionOfPlayer)
+                {
+                    InitializeSmartMovement();
+                    positionOfPlayer = GetPlayerPosition();
+                }
         }
 
         protected override void SetCoordinates()
@@ -50,25 +56,6 @@ namespace Assets.Scripts
                 CheckSetAndTakeNext();
                 enemyPosition = GetEnemyPosition();
             }
-        }
-
-        IEnumerator RefreshPath()
-        {
-            InitializeSmartMovement();
-            yield return new WaitForSeconds(0.05f);
-            StartCoroutine(RefreshPath());
-        }
-
-        IEnumerator MoveByChangePosition()
-        {
-            if (GetPlayerPosition() != positionOfPlayer)
-            {
-                InitializeSmartMovement();
-                positionOfPlayer = GetPlayerPosition();
-            }
-            else base.SetCoordinates();
-            yield return new WaitForSeconds(0.5f);
-            StartCoroutine(MoveByChangePosition());
         }
 
         void InitializeSmartMovement()

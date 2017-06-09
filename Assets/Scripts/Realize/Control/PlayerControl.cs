@@ -3,6 +3,12 @@ namespace Assets.Scripts
 {
     class PlayerControl : Movement
     {
+        private void Awake()
+        {
+            animator = gameObject.GetComponent<Animator>();
+            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.tag == "Enemy")

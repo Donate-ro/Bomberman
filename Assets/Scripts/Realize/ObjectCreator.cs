@@ -37,7 +37,7 @@ namespace Assets.Scripts
         {
             GameObject floor = loader.LoadFloor();
             floor.transform.localScale = new Vector3((rowCount + ScaleOfCube) / scaleOfField, 1, (columnCount + ScaleOfCube) / scaleOfField);
-            Instantiate(floor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            GameObject.Instantiate(floor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         }
 
         public override void CreateUnbreakableWalls()
@@ -51,7 +51,7 @@ namespace Assets.Scripts
                 {
                     if (CanCreateUnbreakableWall(row, column))
                     {
-                        Instantiate(unbreakableWall, new Vector3(row - rowCount / 2f, ScaleOfCube / 2, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
+                        GameObject.Instantiate(unbreakableWall, new Vector3(row - rowCount / 2f, ScaleOfCube / 2, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
                     }
                 }
             }
@@ -92,8 +92,8 @@ namespace Assets.Scripts
 
         public GameObject CreateTextScore()
         {
-            Instantiate(loader.LoadEventSystem());
-            return Instantiate(loader.LoadCanvas());
+            GameObject.Instantiate(loader.LoadEventSystem());
+            return GameObject.Instantiate(loader.LoadCanvas());
 
         }
 
@@ -121,7 +121,7 @@ namespace Assets.Scripts
             int column = random.Next(1, columnCount);
             if ((!CanCreateUnbreakableWall(row, column)) && (!BreakableWall(row, column)))
             {
-                Instantiate(obj, new Vector3(row - rowCount / 2f, scale, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
+                GameObject.Instantiate(obj, new Vector3(row - rowCount / 2f, scale, column - columnCount / 2f), new Quaternion(0, 0, 0, 0));
                 coordinatesOfBreakableWalls[numOfObject, 0] = row;
                 coordinatesOfBreakableWalls[numOfObject, 1] = column;
                 return true;

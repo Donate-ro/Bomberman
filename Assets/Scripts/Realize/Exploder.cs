@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    class Exploder : MonoBehaviour
+    class Exploder
     {
         public float strengthOfExplosion = 1;
         public static List<Vector3> directions = new List<Vector3>()
@@ -16,14 +16,14 @@ namespace Assets.Scripts
         public void Explode(GameObject bomb, GameObject explosion, Action<GameObject> action = null, AudioClip clip = null)
         {
             bomb.SetActive(false);
-            Destroy(bomb);
+            GameObject.Destroy(bomb);
             var particleSystems = explosion.GetComponentsInChildren<ParticleSystem>();
             foreach (var particleSystem in particleSystems)
             {
                 particleSystem.startSpeed = strengthOfExplosion;
             }
             if (!clip) clip = AudioLoader.LoadBombExplosion();
-            Destroy(CreateObjectAndSound(explosion, bomb.transform.position, clip), 1);
+            GameObject.Destroy(CreateObjectAndSound(explosion, bomb.transform.position, clip), 1);
             if (action != null)
             {
                 foreach (var hit in FindCollisions(bomb.transform.position))
@@ -33,7 +33,7 @@ namespace Assets.Scripts
 
         GameObject CreateObjectAndSound(GameObject obj, Vector3 position, AudioClip clip)
         {
-            var explosion = Instantiate(obj, position, new Quaternion(0, 0, 0, 0));
+            var explosion = GameObject.Instantiate(obj, position, new Quaternion(0, 0, 0, 0));
             explosion.AddComponent<AudioSource>();
             explosion.GetComponent<AudioSource>().PlayOneShot(clip);
             return explosion;

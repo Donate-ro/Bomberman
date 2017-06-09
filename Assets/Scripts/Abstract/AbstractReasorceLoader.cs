@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-    public abstract class AbstractReasorceLoader : MonoBehaviour
+    public abstract class AbstractReasorceLoader
     {
         public abstract GameObject LoadFloor();
         public abstract GameObject LoadUnbreakableWall();

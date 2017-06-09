@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    class BombCreator : Exploder
+    class BombCreator : MonoBehaviour
     {
         protected ResourseLoader loader;
+        public Exploder exploder = new Exploder();
         Run run;
         TextScript text;
         public float timeOfLife = 2;
@@ -15,6 +16,7 @@ namespace Assets.Scripts
         public bool detonator;
         List<GameObject> bombsToExplode = new List<GameObject>();
 
+        
         private void Start()
         {
             GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -33,7 +35,7 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Explode(bombsToExplode, loader.LoadExplosionEffect(), DestroyObject);
+                exploder.Explode(bombsToExplode, loader.LoadExplosionEffect(), DestroyObject);
                 bombCount -= bombsToExplode.Count;
                 bombsToExplode = new List<GameObject>();
             }
@@ -50,7 +52,7 @@ namespace Assets.Scripts
                 yield return new WaitForSeconds(timeOfLife);
                 if (!detonator)
                 {
-                    Explode(bomb, loader.LoadExplosionEffect(), DestroyObject);
+                    exploder.Explode(bomb, loader.LoadExplosionEffect(), DestroyObject);
                     bombCount--;
                 }
                 else

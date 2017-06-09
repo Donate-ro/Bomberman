@@ -12,6 +12,12 @@ namespace Assets.Scripts
         bool wallCollision;
         System.Random random = new System.Random();
 
+        private void Awake()
+        {
+            animator = gameObject.GetComponent<Animator>();
+            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
+        }
+
         protected override void SetCoordinates()
         {
             if (countBeforeChangingDirection == changeDirection) RandomCoordinates();

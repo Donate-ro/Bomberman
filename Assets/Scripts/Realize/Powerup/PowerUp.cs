@@ -74,7 +74,7 @@ namespace Assets.Scripts
         void RefreshCollectible()
         {
             bombCreator.maxBombCount = powerUps.FindAll(s => s == Powerup.MoreBombs).Count;
-            bombCreator.strengthOfExplosion = powerUps.FindAll(s => s == Powerup.ExplosionRadius).Count;
+            bombCreator.exploder.strengthOfExplosion = powerUps.FindAll(s => s == Powerup.ExplosionRadius).Count;
         }
 
         IEnumerator ShowSparks()
@@ -92,7 +92,7 @@ namespace Assets.Scripts
             StartCoroutine(ShowSparks());
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<TextScript>().ShowPowerupText(other.gameObject.tag));
             ResourseLoader loader = new ResourseLoader();
-            gameObject.GetComponent<Exploder>().Explode(other.gameObject, loader.LoadExplosion(), null, AudioLoader.LoadCoin());
+            gameObject.GetComponent<BombCreator>().exploder.Explode(other.gameObject, loader.LoadExplosion(), null, AudioLoader.LoadCoin());
             powerUps.Add(powerup);
         }
 

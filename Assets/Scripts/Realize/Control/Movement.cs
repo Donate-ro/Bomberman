@@ -6,6 +6,7 @@ namespace Assets.Scripts
         public float movementSpeed = 0.07f;
         protected Animator animator;
         protected AudioSource audioSource;
+
         private void FixedUpdate()
         {
             SetCoordinates();
@@ -17,12 +18,6 @@ namespace Assets.Scripts
         {
             if (((moveHorizontal > 0) || (moveVertical > 0)) || ((moveHorizontal < 0) || (moveVertical < 0))) animator.SetFloat("Movement", 1.1f);
             else animator.SetFloat("Movement", 0);
-        }
-
-        private void Start()
-        {
-            animator = gameObject.GetComponent<Animator>();
-            audioSource = gameObject.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
         }
 
         protected override void Move()

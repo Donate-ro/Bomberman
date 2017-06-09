@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-    public abstract class AbstractObjectCreator : MonoBehaviour
+    public abstract class AbstractObjectCreator
     {
         public abstract void CreateFloor();
         public abstract void CreateUnbreakableWalls();
